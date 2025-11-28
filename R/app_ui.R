@@ -9,8 +9,17 @@ app_ui <- function(request) {
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic
-    fluidPage(
-      golem::golem_welcome_page() # Remove this line to start building your UI
+    bslib::page_navbar(
+      theme = bslib::bs_theme(version = 5, bootswatch = "pulse"),
+      title = shiny::HTML("<img src = 'resources/prelim_logo.png' height = 80>"),
+      window_title = "prokvis2",
+      bslib::nav_panel("Plots"),
+      bslib::nav_panel("Name Mapping"),
+      bslib::nav_panel("Help"),
+      bslib::nav_panel("About"),
+      bslib::nav_spacer(),
+      bslib::nav_item(shiny::tags$a(shiny::icon("github"), "GitHub", href = "https://github.com/yasche", target = "_blank")),
+      bslib::nav_item(shiny::tags$a(shiny::icon("envelope"), "Contact", href = "https://posit.co", target = "_blank"))
     )
   )
 }
