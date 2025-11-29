@@ -13,7 +13,13 @@ app_ui <- function(request) {
       theme = bslib::bs_theme(version = 5, bootswatch = "pulse"),
       title = shiny::HTML("<img src = 'resources/prelim_logo.png' height = 80>"),
       window_title = "prokvis2",
-      bslib::nav_panel("Plots"),
+      bslib::nav_panel("Plots",
+                       bslib::navset_card_underline(
+                         bslib::nav_panel("Circular", mod_plots_ui("plots_ui_c", "circular")),
+                         bslib::nav_panel("Network", mod_plots_ui("plots_ui_n", "network")),
+                         bslib::nav_panel("Phylogenetic tree", mod_plots_ui("plots_ui_pt", "phylo")),
+                         bslib::nav_panel("Kinases", mod_plots_ui("plots_ui_k", "table")))
+                       ),
       bslib::nav_panel("Name Mapping"),
       bslib::nav_panel("Help"),
       bslib::nav_panel("About"),
