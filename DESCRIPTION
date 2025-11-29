@@ -13,6 +13,7 @@ Imports:
     bslib,
     config,
     golem,
+    scico,
     shiny
 Encoding: UTF-8
 LazyData: true
