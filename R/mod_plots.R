@@ -14,11 +14,17 @@ mod_plots_ui <- function(id, plot_tab) {
       sidebar = bslib::sidebar(
         # the page sidebar goes here
         shiny::selectInput(ns("speciesSelection"), "Species", species_selection_choices(kinome_data)),
-        bslib::accordion(
-          bslib::accordion_panel(
-            "Gerneral Appearance", icon = bsicons::bs_icon("palette")
-            )
-        ),
+        if (plot_tab != "table") {
+          bslib::accordion(
+            bslib::accordion_panel(
+              "Gerneral Appearance", icon = bsicons::bs_icon("palette"),
+              selectInput('colorPalette', 'Color palette', c("Default ggplot2",
+                                                             "Custom",
+                                                             scico::scico_palette_names()))
+            ),
+            open = FALSE
+          )
+        },
 
         if (plot_tab == "circular") {
           list(
