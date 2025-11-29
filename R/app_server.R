@@ -7,4 +7,7 @@
 app_server <- function(input, output, session) {
   # Your application server logic
   mod_plots_server("plots_ui_c")
+  mod_plots_server("plots_ui_n")
+  mod_plots_server("plots_ui_pt")
+  mod_plots_server("plots_ui_k")
 }

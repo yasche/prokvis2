@@ -21,7 +21,35 @@ mod_plots_ui <- function(id, plot_tab) {
               shiny::selectInput(ns("color_palette"), "Color palette", c("Default ggplot2", "Custom", scico::scico_palette_names())),
               shiny::uiOutput(ns("ui_custom_color_pal")),
               shiny::checkboxInput(ns("color_branches_groups"), "Color branches based on Groups", value = TRUE),
-              shiny::uiOutput(ns("ui_default_branch_color"))
+              shiny::uiOutput(ns("ui_default_branch_color")),
+              shiny::numericInput(ns("branch_thickness"), "Branch thickness", min = 0, value = 0.15, step = 0.05),
+              shiny::checkboxInput(ns("hideLegend"), "Hide legend", value = FALSE),
+              shiny::numericInput(ns("plot_height"), "Plot height in pixels", value = 1000),
+              shiny::numericInput(ns("plot_width"), "Plot width in pixels", value = 1000),
+
+              if (plot_tab == "phylo") {
+                list(
+                  shiny::selectInput(ns("phylo_tree_layout"), "Tree layout", choices = c("fan", "circular", "radial", "equal_angle", "daylight", "ape")),
+                  shiny::selectInput(ns("phylo_branch_scaling"), "Scale branch length", choices = c("None", "log10", "True length")),
+                  shiny::checkboxInput(ns("adjust_legend_pos_man"), "Adjust legend position manually", value = FALSE),
+                  shiny::uiOutput(ns("ui_adjust_legend_pos"))
+                )
+              }
+
+
+
+              #conditionalPanel(condition = "input.selectedTab != 'Phylogenetic Tree'",
+              #                 checkboxInput('highlightGroups', 'Highlight Groups', value = FALSE)),
+              #conditionalPanel(condition = "input.selectedTab != 'Phylogenetic Tree' & input.highlightGroups == true",
+              #                 sliderInput("groupHighlighterAlpha", "Alpha", min = 0, max = 1, value = 0.1, step = 0.01)),
+
+              #conditionalPanel(condition = "input.selectedTab == 'Network Plot'",
+              #                 numericInput("setSeed", "Layout", min = 0, value = 1)),
+
+              #conditionalPanel(condition = "input.selectedTab == 'Phylogenetic Tree' & input.adjustLegendPos == true",
+              #                 #sliderInput("phyloAtypicalHeight", "Atypical kinase plot height (inverse)", min = 0.1, max = 100, step = 0.05, value = 100)
+              #)
+
             ),
             open = FALSE
           )
@@ -79,6 +107,17 @@ mod_plots_server <- function(id){
     output$ui_default_branch_color <- shiny::renderUI({
       if(input$color_branches_groups == FALSE) {
         colourpicker::colourInput(ns("default_branch_color"), "Default branch color", value = "grey")
+      }
+    })
+
+    output$ui_adjust_legend_pos <- shiny::renderUI({
+      if (input$adjust_legend_pos_man == TRUE) {
+        list(
+          shiny::HTML("Legend position"),
+          shiny::numericInput(ns("phylo_legend_x"), "x", min = 0, value = 1, step = 0.05),
+          shiny::numericInput(ns("phylo_legend_y"), "y", min = 0, value = 0.5, step = 0.05),
+          shiny::sliderInput(ns("phylo_atypical_length"), "Atypical kinase plot length (inverse)", min = 0.1, max = 2, step = 0.05, value = 0.8)
+        )
       }
     })
 
