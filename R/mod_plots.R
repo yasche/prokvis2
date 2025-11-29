@@ -13,6 +13,13 @@ mod_plots_ui <- function(id, plot_tab) {
     bslib::layout_sidebar(
       sidebar = bslib::sidebar(
         # the page sidebar goes here
+        shiny::selectInput(ns("speciesSelection"), "Species", species_selection_choices(kinome_data)[[1]]),
+        bslib::accordion(
+          bslib::accordion_panel(
+            "Gerneral Appearance", icon = bsicons::bs_icon("palette")
+            )
+        ),
+
         if (plot_tab == "circular") {
           list(
             "the sidebar is circular",
@@ -29,7 +36,8 @@ mod_plots_ui <- function(id, plot_tab) {
 
       # the page content goes here
       if (plot_tab == "circular") {
-        "the plot is circular"
+        #"the plot is circular",
+        textOutput(ns("test_spec_selected"))
       },
       if (plot_tab == "network") {
         "the plot is network"
@@ -54,7 +62,9 @@ mod_plots_ui <- function(id, plot_tab) {
 mod_plots_server <- function(id){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
-
+    output$test_spec_selected <- renderText({
+      input$speciesSelection
+    })
   })
 }
 
