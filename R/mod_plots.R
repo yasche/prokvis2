@@ -18,9 +18,8 @@ mod_plots_ui <- function(id, plot_tab) {
           bslib::accordion(
             bslib::accordion_panel(
               "Gerneral Appearance", icon = bsicons::bs_icon("palette"),
-              selectInput('colorPalette', 'Color palette', c("Default ggplot2",
-                                                             "Custom",
-                                                             scico::scico_palette_names()))
+              shiny::selectInput(ns("colorPalette"), "Color palette", c("Default ggplot2", "Custom", scico::scico_palette_names())),
+              shiny::uiOutput(ns("custom_color_pal"))
             ),
             open = FALSE
           )
@@ -68,6 +67,14 @@ mod_plots_ui <- function(id, plot_tab) {
 mod_plots_server <- function(id){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
+
+    output$custom_color_pal <- shiny::renderUI({
+      if (input$colorPalette == "Custom") {
+        "the palette is custom"
+      }
+    })
+
+
     output$test_spec_selected <- renderText({
       input$speciesSelection
     })
