@@ -13,12 +13,12 @@ mod_plots_ui <- function(id, plot_tab) {
     bslib::layout_sidebar(
       sidebar = bslib::sidebar(
         # the page sidebar goes here
-        shiny::selectInput(ns("speciesSelection"), "Species", species_selection_choices(kinome_data)),
+        shiny::selectInput(ns("species_selection"), "Species", species_selection_choices(kinome_data)),
         if (plot_tab != "table") {
           bslib::accordion(
             bslib::accordion_panel(
               "Gerneral Appearance", icon = bsicons::bs_icon("palette"),
-              shiny::selectInput(ns("colorPalette"), "Color palette", c("Default ggplot2", "Custom", scico::scico_palette_names())),
+              shiny::selectInput(ns("color_palette"), "Color palette", c("Default ggplot2", "Custom", scico::scico_palette_names())),
               shiny::uiOutput(ns("custom_color_pal"))
             ),
             open = FALSE
@@ -69,14 +69,14 @@ mod_plots_server <- function(id){
     ns <- session$ns
 
     output$custom_color_pal <- shiny::renderUI({
-      if (input$colorPalette == "Custom") {
+      if (input$color_palette == "Custom") {
         "the palette is custom"
       }
     })
 
 
     output$test_spec_selected <- renderText({
-      input$speciesSelection
+      input$species_selection
     })
   })
 }
