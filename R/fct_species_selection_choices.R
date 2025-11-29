@@ -6,12 +6,17 @@
 #'
 #' @noRd
 species_selection_choices <- function(kinome_data) {
-  spec_names <- unlist(map(kinome_data, extract_names))
+  spec_list <- unlist(map(kinome_data, extract_names))
 
-  list(
-    unname(spec_names),
-    names(spec_names)
-  )
+  #list(
+  #  unname(spec_names),
+  #  names(spec_names)
+  #)
+
+  spec_names <- names(spec_list)
+  names(spec_names) <- unname(spec_list)
+
+  spec_names
 }
 
 

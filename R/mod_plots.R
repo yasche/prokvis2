@@ -13,7 +13,7 @@ mod_plots_ui <- function(id, plot_tab) {
     bslib::layout_sidebar(
       sidebar = bslib::sidebar(
         # the page sidebar goes here
-        shiny::selectInput(ns("speciesSelection"), "Species", species_selection_choices(kinome_data)[[1]]),
+        shiny::selectInput(ns("speciesSelection"), "Species", species_selection_choices(kinome_data)),
         bslib::accordion(
           bslib::accordion_panel(
             "Gerneral Appearance", icon = bsicons::bs_icon("palette")
