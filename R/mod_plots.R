@@ -19,7 +19,9 @@ mod_plots_ui <- function(id, plot_tab) {
             bslib::accordion_panel(
               "Gerneral Appearance", icon = bsicons::bs_icon("palette"),
               shiny::selectInput(ns("color_palette"), "Color palette", c("Default ggplot2", "Custom", scico::scico_palette_names())),
-              shiny::uiOutput(ns("custom_color_pal"))
+              shiny::uiOutput(ns("ui_custom_color_pal")),
+              shiny::checkboxInput(ns("color_branches_groups"), "Color branches based on Groups", value = TRUE),
+              shiny::uiOutput(ns("ui_default_branch_color"))
             ),
             open = FALSE
           )
@@ -68,12 +70,17 @@ mod_plots_server <- function(id){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 
-    output$custom_color_pal <- shiny::renderUI({
+    output$ui_custom_color_pal <- shiny::renderUI({
       if (input$color_palette == "Custom") {
         "the palette is custom"
       }
     })
 
+    output$ui_default_branch_color <- shiny::renderUI({
+      if(input$color_branches_groups == FALSE) {
+        colourpicker::colourInput(ns("default_branch_color"), "Default branch color", value = "grey")
+      }
+    })
 
     output$test_spec_selected <- renderText({
       input$species_selection
