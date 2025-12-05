@@ -6,7 +6,7 @@
 #'
 #' @noRd
 species_selection_choices <- function(kinome_data) {
-  spec_list <- unlist(map(kinome_data, extract_names))
+  spec_list <- unlist(purrr::map(kinome_data, extract_names))
 
   #list(
   #  unname(spec_names),
