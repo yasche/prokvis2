@@ -11,7 +11,8 @@ app_ui <- function(request) {
     # Your application UI logic
     bslib::page_navbar(
       theme = bslib::bs_theme(version = 5, bootswatch = "pulse"),
-      title = shiny::HTML("<img src = 'resources/prelim_logo.png' height = 80>"),
+      #title = shiny::HTML(paste0("<img src = '", paste0(app_sys("app/www"), "/favicon.png"), "' height = 80>")),
+      title = "prokvis2",
       window_title = "prokvis2",
       bslib::nav_panel("Plots",
                        bslib::navset_card_underline(
