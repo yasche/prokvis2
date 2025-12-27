@@ -25,7 +25,7 @@ app_ui <- function(request) {
       bslib::nav_panel("About"),
       bslib::nav_spacer(),
       bslib::nav_item(shiny::tags$a(shiny::icon("github"), "GitHub", href = "https://github.com/yasche", target = "_blank")),
-      bslib::nav_item(shiny::tags$a(shiny::icon("envelope"), "Contact", href = "https://posit.co", target = "_blank"))
+      bslib::nav_item(shiny::tags$a(shiny::icon("envelope"), "Contact", href = "mailto:mail@yannik.science", target = "_blank"))
     )
   )
 }
