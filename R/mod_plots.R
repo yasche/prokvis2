@@ -36,6 +36,21 @@ mod_plots_ui <- function(id, plot_tab) {
                 )
               }
             ),
+            bslib::accordion_panel(
+              "Node & Edge Settings", icon = bsicons::bs_icon("diagram-3"),
+              shiny::checkboxInput(ns("color_kinase_edges_groups"), "Color nodes and edges based on groups"),
+              shiny::actionButton(ns("edit_kinases_action_button"), "Edit kinase edges", width = "100%"),
+              if (plot_tab != "phylo") {
+                list(
+                  shiny::tags$br(),
+                  shiny::actionButton(ns("edit_groups_action_button"), "Edit group nodes", width = "100%"),
+                  shiny::tags$br(),
+                  shiny::actionButton(ns("edit_families_action_button"), "Edit family nodes", width = "100%"),
+                  shiny::tags$br(),
+                  shiny::actionButton(ns("edit_sub_families_action_button"), "Edit subfamily nodes", width = "100%")
+                )
+              }
+            ),
             open = FALSE
           )
         }
