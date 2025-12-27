@@ -13,10 +13,13 @@ Imports:
     bslib,
     colourpicker,
     config,
+    dplyr,
+    DT,
     golem,
     magrittr,
     purrr,
     rhandsontable,
+    rlang,
     scico,
     shiny,
     stringr
