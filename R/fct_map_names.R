@@ -9,7 +9,7 @@ map_names <- function(kinome_data, species_selection, kinase_names) {
   aliases <- extract_aliases_df(kinome_data, species_selection)
 
   input_kinases <- kinase_names %>%
-    str_split("\\n") %>%
+    stringr::str_split("\\n") %>%
     unlist()
 
   matched_kinases <- purrr::map(input_kinases, grep, aliases$Alias, ignore.case = T)
@@ -18,9 +18,9 @@ map_names <- function(kinome_data, species_selection, kinase_names) {
 
   purrr::map(matched_kinases, select_rows_int, aliases) %>%
     dplyr::bind_rows(.id = "Input") %>%
-    dplyr::transmute(Input = Input,
-                     Manning_Name = Gene,
-                     Aliases = Alias)
+    dplyr::transmute(Input = .data$Input,
+                     Manning_Name = .data$Gene,
+                     Aliases = .data$Alias)
 }
 
 #' Helper function to select rows in a data frame by index
