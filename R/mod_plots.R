@@ -51,6 +51,64 @@ mod_plots_ui <- function(id, plot_tab) {
                 )
               }
             ),
+            bslib::accordion_panel(
+              "Label Settings", icon = bsicons::bs_icon("fonts"),
+              shiny::selectInput(ns("chosen_font"), "Font", c("some", "font", "names"), multiple = FALSE),
+              shiny::selectInput(ns("show_kinases_labels"), "Show kinase labels",
+                                 choices = c("None",
+                                             "All",
+                                             "Annotated",
+                                             "Manual selection"),
+                                 selected = "All"),
+
+              shiny::uiOutput(ns("ui_manual_selection_input")),
+
+              shiny::selectInput(ns("show_which_kinase_labels"),
+                                 list("Label source",
+                                      bslib::tooltip(
+                                          bsicons::bs_icon("question-circle"),
+                                          "A custom label (Clabel) for each kinase, group, family and subfamily can be provided in the Node & Edge Settings.",
+                                          placement = "right"
+                                        )
+                                      ),
+                                 choices = c("Manning name",
+                                             "Uniprot gene name",
+                                             "Uniprot entry",
+                                             "Uniprot accession",
+                                             "Custom")),
+              shiny::checkboxInput(ns("color_kinase_labels_groups"), "Color kinase labels based on Groups", value = TRUE),
+
+              shiny::uiOutput(ns("ui_default_label_color")),
+
+              shiny::numericInput(ns("label_size"), "Kinase label size", min = 0, value = 1.5, step = 0.1),
+              shiny::numericInput(ns("legend_title_size"), "Legend title size", min = 0, value = 18, step = 1),
+              shiny::numericInput(ns("legend_label_size"), "Legend text size", min = 0, value = 15, step = 1),
+
+              if (plot_tab == "network") {
+                list(
+                  shiny::numericInput(ns("nudge_kinase_label_X"), "Nudge kinase label X", value = 0, step = 0.001),
+                  shiny::numericInput(ns("nudge_kinase_label_Y"), "Nudge kinase label Y", value = 0, step = 0.001)
+                )
+              },
+
+              if (plot_tab != "phylo") {
+                list(
+                  shiny::checkboxInput(ns("show_group_labels"), "Show group labels", value = TRUE),
+                  shiny::uiOutput(ns("ui_group_label_size"))
+                )
+              },
+
+              if (plot_tab == "circular") {
+                shiny::uiOutput(ns("ui_group_label_radius"))
+              },
+
+              if (plot_tab == "network") {
+                list(
+                  shiny::uiOutput(ns("ui_adjust_np_pos_manually")),
+                  shiny::uiOutput(ns("ui_np_group_label_position"))
+                )
+              }
+            ),
             open = FALSE
           )
         }
@@ -105,6 +163,46 @@ mod_plots_server <- function(id){
           shiny::numericInput(ns("phylo_legend_y"), "y", min = 0, value = 0.5, step = 0.05),
           shiny::sliderInput(ns("phylo_atypical_length"), "Atypical kinase plot length (inverse)", min = 0.1, max = 2, step = 0.05, value = 0.8)
         )
+      }
+    })
+
+    output$ui_default_label_color <- shiny::renderUI({
+      if (input$color_kinase_labels_groups == FALSE) {
+        colourpicker::colourInput(ns("default_label_color"), "Default label color", value = "grey")
+      }
+    })
+
+    output$ui_manual_selection_input <- shiny::renderUI({
+      if (input$show_kinases_labels == "Manual selection") {
+        # Server code is still missing!
+        "The selection is set to Manual"
+      }
+    })
+
+    output$ui_group_label_size <- shiny::renderUI({
+      if (input$show_group_labels == TRUE) {
+        shiny::numericInput(ns("group_label_size"), "Group label size", value = 5, step = 0.5)
+      }
+    })
+
+    output$ui_group_label_radius <- shiny::renderUI({
+      if (input$show_group_labels == TRUE) {
+        shiny::numericInput(ns("group_label_radius"), "Group label radius", value = 1, step = 0.1)
+      }
+    })
+
+    output$ui_adjust_np_pos_manually <- shiny::renderUI({
+      if (input$show_group_labels == TRUE) {
+        shiny::checkboxInput(ns("adjust_np_pos_manually"), "Adjust the label position for each group manually", value = FALSE)
+      }
+    })
+
+    output$ui_np_group_label_position <- shiny::renderUI({
+      if (!is.null(input$adjust_np_pos_manually)) {
+        if (input$show_group_labels == TRUE & input$adjust_np_pos_manually == TRUE) {
+          # Server code is still missing!
+          "np group label positions are set to manual"
+        }
       }
     })
 
