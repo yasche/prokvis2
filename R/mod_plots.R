@@ -35,37 +35,9 @@ mod_plots_ui <- function(id, plot_tab) {
                   shiny::uiOutput(ns("ui_adjust_legend_pos"))
                 )
               }
-
-
-
-              #conditionalPanel(condition = "input.selectedTab != 'Phylogenetic Tree'",
-              #                 checkboxInput('highlightGroups', 'Highlight Groups', value = FALSE)),
-              #conditionalPanel(condition = "input.selectedTab != 'Phylogenetic Tree' & input.highlightGroups == true",
-              #                 sliderInput("groupHighlighterAlpha", "Alpha", min = 0, max = 1, value = 0.1, step = 0.01)),
-
-              #conditionalPanel(condition = "input.selectedTab == 'Network Plot'",
-              #                 numericInput("setSeed", "Layout", min = 0, value = 1)),
-
-              #conditionalPanel(condition = "input.selectedTab == 'Phylogenetic Tree' & input.adjustLegendPos == true",
-              #                 #sliderInput("phyloAtypicalHeight", "Atypical kinase plot height (inverse)", min = 0.1, max = 100, step = 0.05, value = 100)
-              #)
-
             ),
             open = FALSE
           )
-        },
-
-        if (plot_tab == "circular") {
-          list(
-            "the sidebar is circular",
-            shiny::tags$br()
-          )
-        },
-        if (plot_tab == "network") {
-          "the sidebar is network"
-        },
-        if (plot_tab == "circular") {
-          "more circular"
         }
       ),
 
