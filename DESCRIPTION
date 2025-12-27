@@ -14,7 +14,9 @@ Imports:
     colourpicker,
     config,
     golem,
+    magrittr,
     purrr,
+    rhandsontable,
     scico,
     shiny
 Encoding: UTF-8
