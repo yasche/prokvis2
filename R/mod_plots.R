@@ -121,6 +121,9 @@ mod_plots_ui <- function(id, plot_tab) {
       },
       if (plot_tab == "network") {
         "the plot is network"
+      },
+      if (plot_tab == "table") {
+        DT::dataTableOutput(ns("kinome_table"))
       }
 
     )
@@ -208,6 +211,22 @@ mod_plots_server <- function(id){
 
     output$test_spec_selected <- renderText({
       input$species_selection
+    })
+
+    output$kinome_table <- DT::renderDataTable({
+      DT::datatable(
+        extract_kinome_df(kinome_data = kinome_data, species_selection = input$species_selection),
+        extensions = 'Buttons',
+        options = list(
+          dom = 'Bfrtip',
+          pageLength = -1,
+          buttons = list(
+            extend = 'collection',
+            buttons = c('copy', 'csv', 'excel', 'pdf'),
+            text = 'Download'
+          )
+        )
+      )
     })
   })
 }
