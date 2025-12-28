@@ -21,7 +21,8 @@ app_ui <- function(request) {
                          bslib::nav_panel("Phylogenetic tree", mod_plots_ui("plots_ui_pt", "phylo")),
                          bslib::nav_panel("Kinases", mod_plots_ui("plots_ui_k", "table")))
                        ),
-      bslib::nav_panel("Name Mapping"),
+      bslib::nav_panel("Name Mapping",
+                       mod_name_map_ui("name_map_1")),
       bslib::nav_panel("Help"),
       bslib::nav_panel("About"),
       bslib::nav_spacer(),

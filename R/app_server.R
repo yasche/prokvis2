@@ -10,4 +10,5 @@ app_server <- function(input, output, session) {
   mod_plots_server("plots_ui_n")
   mod_plots_server("plots_ui_pt")
   mod_plots_server("plots_ui_k")
+  mod_name_map_server("name_map_1")
 }
