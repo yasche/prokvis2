@@ -72,3 +72,18 @@ name_map_rhot <- function(kinome_data, species_selection, kinase_names) {
   map_names(kinome_data, species_selection, kinase_names, aliases) %>%
     name_map_df2rhot(aliases)
 }
+
+name_map_dl_helper <- function(mapped_kinases_rhot) {
+  if(!is.null(mapped_kinases_rhot)) {
+    mapped_kinases_rhot %>%
+      rhandsontable::hot_to_r() %>%
+      dplyr::filter(.data$Include == TRUE) %>%
+      dplyr::select(-"Include")
+  } else {
+    return(data.frame(
+      Input = character(),
+      Manning_Name = character(),
+      Aliases = character()
+    ))
+  }
+}
