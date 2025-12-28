@@ -2,6 +2,10 @@
 #'
 #' @description A fct function
 #'
+#' @param kinome_data A `kinome_data` object
+#' @param species_selection The two-letter code of the species (e.g., `hs` for human)
+#' @param kinase_names Character value where the kinases to map are separated by a linebreak (i.e., `\n`)
+#'
 #' @return The return value, if any, from executing the function.
 #'
 #' @noRd
@@ -20,6 +24,7 @@ map_names <- function(kinome_data, species_selection, kinase_names) {
     dplyr::bind_rows(.id = "Input") %>%
     dplyr::transmute(Input = .data$Input,
                      Manning_Name = .data$Gene,
+                     Include = TRUE,
                      Aliases = .data$Alias)
 }
 
@@ -39,8 +44,9 @@ name_map_df2rhot <- function(name_map_df, aliases) {
   rhandsontable::rhandsontable(name_map_df, height = 500) %>%
     rhandsontable::hot_table(stretchH = "all") %>%
     rhandsontable::hot_col(1, readOnly = T) %>%
-    rhandsontable::hot_col(2, type = "dropdown", source = aliases$Manning_Name, strict = TRUE) %>%
+    rhandsontable::hot_col(2, type = "dropdown", source = aliases$Alias, strict = TRUE) %>%
     rhandsontable::hot_col(3, type = "checkbox") %>%
+    rhandsontable::hot_col(4, readOnly = T) %>%
     rhandsontable::hot_rows(rowHeights = 25)
 }
 
