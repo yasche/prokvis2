@@ -8,6 +8,7 @@
 #' @importFrom shiny shinyApp
 #' @importFrom golem with_golem_options
 run_app <- function(
+  custom_kinome_data = NULL,
   onStart = NULL,
   options = list(),
   enableBookmarking = NULL,
@@ -23,6 +24,8 @@ run_app <- function(
       enableBookmarking = enableBookmarking,
       uiPattern = uiPattern
     ),
-    golem_opts = list(...)
+    golem_opts = list(
+      custom_kinome_data = custom_kinome_data
+    )
   )
 }
