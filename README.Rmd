@@ -1,0 +1,40 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# prokvis2
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of prokvis2 is to ...
+
+## Installation
+
+You can install the development version of prokvis2 from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("pak")
+pak::pak("yasche/prokvis2")
+```
+
+## Example
+
+This is a basic example which shows you how to solve a common problem:
+
+```{r example, eval=FALSE}
+library(prokvis2)
+
+run_app()
+```
