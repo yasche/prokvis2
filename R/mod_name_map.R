@@ -38,6 +38,17 @@ mod_name_map_server <- function(id){
     output$mapped_kinases_hot <- rhandsontable::renderRHandsontable({
       reactive_mapped_kinases_hot()
     })
+
+    reactive_download_namemap <- shiny::reactive({
+      name_map_dl_helper(input$mapped_kinases_hot)
+    })
+
+    output$download_namemap <- shiny::downloadHandler(
+      filename = function() {"namemap.csv"},
+      content = function(file){
+        write_csv(reactive_download_namemap(), file)
+      }
+    )
   })
 }
 
