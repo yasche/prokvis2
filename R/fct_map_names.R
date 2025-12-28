@@ -59,6 +59,13 @@ extract_aliases_df <- function(kinome_data, species_selection) {
   kinome_data[[species_selection]]$aliases
 }
 
+#' Wrapper function for easier inclusion in the server function
+#'
+#' @description A fct function
+#'
+#' @return The result from `map_names` converted to an rhot.
+#'
+#' @noRd
 name_map_rhot <- function(kinome_data, species_selection, kinase_names) {
   aliases <- extract_aliases_df(kinome_data, species_selection)
 
