@@ -5,6 +5,7 @@
 \title{Run the Shiny Application}
 \usage{
 run_app(
+  custom_kinome_data = NULL,
   onStart = NULL,
   options = list(),
   enableBookmarking = NULL,
@@ -13,6 +14,8 @@ run_app(
 )
 }
 \arguments{
+\item{custom_kinome_data}{Either `NULL` to run the app with the internal `kinome_data` object or the path to a custom `kinome_data` file.}
+
 \item{onStart}{A function that will be called before the app is actually run.
 This is only needed for \code{shinyAppObj}, since in the \code{shinyAppDir}
 case, a \code{global.R} file can be used for this purpose.}

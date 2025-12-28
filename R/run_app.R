@@ -1,5 +1,6 @@
 #' Run the Shiny Application
 #'
+#' @param custom_kinome_data Either `NULL` to run the app with the internal `kinome_data` object or the path to a custom `kinome_data` file.
 #' @param ... arguments to pass to golem_opts.
 #' See `?golem::get_golem_options` for more details.
 #' @inheritParams shiny::shinyApp
