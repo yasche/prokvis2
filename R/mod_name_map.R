@@ -7,7 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_name_map_ui <- function(id) {
+mod_name_map_ui <- function(id, kinome_data) {
   ns <- NS(id)
 
   bslib::layout_column_wrap(
@@ -26,7 +26,7 @@ mod_name_map_ui <- function(id) {
 #' name_map Server Functions
 #'
 #' @noRd
-mod_name_map_server <- function(id){
+mod_name_map_server <- function(id, kinome_data){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 

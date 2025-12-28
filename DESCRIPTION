@@ -18,6 +18,7 @@ Imports:
     golem,
     magrittr,
     purrr,
+    readr,
     rhandsontable,
     rlang,
     scico,

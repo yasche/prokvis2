@@ -7,7 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_plots_ui <- function(id, plot_tab) {
+mod_plots_ui <- function(id, plot_tab, kinome_data) {
   ns <- NS(id)
   tagList(
     bslib::layout_sidebar(
@@ -142,7 +142,7 @@ mod_plots_ui <- function(id, plot_tab) {
 #' plots Server Functions
 #'
 #' @noRd
-mod_plots_server <- function(id){
+mod_plots_server <- function(id, kinome_data){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 

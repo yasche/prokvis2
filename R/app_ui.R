@@ -5,6 +5,12 @@
 #' @import shiny
 #' @noRd
 app_ui <- function(request) {
+  if (is.null(golem::get_golem_options("custom_kinome_data"))) {
+    use_kinome_data <- kinome_data
+  } else {
+    # add dedicated read function with sanity check and diagnostic messages later
+    use_kinome_data <- readr::read_rds(golem::get_golem_options("custom_kinome_data"))
+  }
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
@@ -16,13 +22,13 @@ app_ui <- function(request) {
       window_title = "prokvis2",
       bslib::nav_panel("Plots",
                        bslib::navset_card_underline(
-                         bslib::nav_panel("Circular", mod_plots_ui("plots_ui_c", "circular")),
-                         bslib::nav_panel("Network", mod_plots_ui("plots_ui_n", "network")),
-                         bslib::nav_panel("Phylogenetic tree", mod_plots_ui("plots_ui_pt", "phylo")),
-                         bslib::nav_panel("Kinases", mod_plots_ui("plots_ui_k", "table")))
+                         bslib::nav_panel("Circular", mod_plots_ui("plots_ui_c", "circular", kinome_data = use_kinome_data)),
+                         bslib::nav_panel("Network", mod_plots_ui("plots_ui_n", "network", kinome_data = use_kinome_data)),
+                         bslib::nav_panel("Phylogenetic tree", mod_plots_ui("plots_ui_pt", "phylo", kinome_data = use_kinome_data)),
+                         bslib::nav_panel("Kinases", mod_plots_ui("plots_ui_k", "table", kinome_data = use_kinome_data)))
                        ),
       bslib::nav_panel("Name Mapping",
-                       mod_name_map_ui("name_map_1")),
+                       mod_name_map_ui("name_map_1", kinome_data = use_kinome_data)),
       bslib::nav_panel("Help"),
       bslib::nav_panel("About"),
       bslib::nav_spacer(),
