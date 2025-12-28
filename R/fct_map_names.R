@@ -9,9 +9,7 @@
 #' @return The return value, if any, from executing the function.
 #'
 #' @noRd
-map_names <- function(kinome_data, species_selection, kinase_names) {
-  aliases <- extract_aliases_df(kinome_data, species_selection)
-
+map_names <- function(kinome_data, species_selection, kinase_names, aliases) {
   input_kinases <- kinase_names %>%
     stringr::str_split("\\n") %>%
     unlist()
@@ -44,7 +42,7 @@ name_map_df2rhot <- function(name_map_df, aliases) {
   rhandsontable::rhandsontable(name_map_df, height = 500) %>%
     rhandsontable::hot_table(stretchH = "all") %>%
     rhandsontable::hot_col(1, readOnly = T) %>%
-    rhandsontable::hot_col(2, type = "dropdown", source = aliases$Alias, strict = TRUE) %>%
+    rhandsontable::hot_col(2, type = "dropdown", source = aliases$Gene, strict = TRUE) %>%
     rhandsontable::hot_col(3, type = "checkbox") %>%
     rhandsontable::hot_col(4, readOnly = T) %>%
     rhandsontable::hot_rows(rowHeights = 25)
@@ -59,4 +57,11 @@ name_map_df2rhot <- function(name_map_df, aliases) {
 #' @noRd
 extract_aliases_df <- function(kinome_data, species_selection) {
   kinome_data[[species_selection]]$aliases
+}
+
+name_map_rhot <- function(kinome_data, species_selection, kinase_names) {
+  aliases <- extract_aliases_df(kinome_data, species_selection)
+
+  map_names(kinome_data, species_selection, kinase_names, aliases) %>%
+    name_map_df2rhot(aliases)
 }
