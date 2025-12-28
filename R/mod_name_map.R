@@ -18,7 +18,7 @@ mod_name_map_ui <- function(id) {
     ),
 
     bslib::card(
-      rhandsontable::rHandsontableOutput(ns("mapped_kinases_hot"), height = "100%"),
+      rhandsontable::rHandsontableOutput(ns("mapped_kinases_hot")),
       shiny::downloadButton(ns("download_namemap"), "Download"))
   )
 }
