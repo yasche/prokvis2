@@ -62,133 +62,13 @@ ne_df_to_rhot_helper <- function(ne_df, ne_names) {
 }
 
 
-combine_nodes_and_edges <- function(kinase_edges_hot, group_nodes_hot, family_nodes_hot, subfamily_nodes_hot) {
+combine_nodes_and_edges <- function(kinase_edges_hot, group_nodes_hot, family_nodes_hot, subfamily_nodes_hot, kinome_df) {
+  kinases <- ne_rhot_to_df_helper(kinase_edges_hot, "Manning_Name", kinome_df, NULL)
+  kgroups <- ne_rhot_to_df_helper(kinase_edges_hot, "Kinase_Group", kinome_df, "Group")
+  kfams <- ne_rhot_to_df_helper(kinase_edges_hot, "Kinase_Family", kinome_df, "Family")
+  ksubfams <- ne_rhot_to_df_helper(kinase_edges_hot, "Kinase_Subfamily", kinome_df, "Subfamily")
 
-  kinases <- hot_to_r(input$kinase_edges_hot) %||% data.frame(Name = character(),
-                                                              Size = numeric(),
-                                                              Color = character(),
-                                                              Shape = character(),
-                                                              Stroke = character(),
-                                                              Stroke_Width = numeric(),
-                                                              Clabel =  character())
-  kin_names <- selected_kinome() %>%
-    select(Manning_Name) %>%
-    distinct()
-
-  kinases <- left_join(kin_names, kinases, by = join_by(Manning_Name == Name)) %>%
-    transmute(Name = Manning_Name,
-              Size = Size,
-              Shape = Shape,
-              Color = Color,
-              Stroke = Stroke,
-              Stroke_Width = Stroke_Width,
-              Clabel = Clabel) %>%
-    mutate(Size = case_when(Size == 0 ~ NA,
-                            .default = Size)) %>%
-    mutate(Color = case_when(Color == "" ~ "#000000",
-                             .default = Color)) %>%
-    mutate(Shape = case_when(Shape == "" ~ "circle",
-                             .default = Shape)) %>%
-    mutate(Shape = pointshape(Shape)) %>%
-    mutate(Stroke = case_when(Stroke == "" ~ Color,
-                              .default = Stroke))
-
-  #groups
-  kgroups <- hot_to_r(input$group_nodes_hot) %||% data.frame(Name = character(),
-                                                             Size = numeric(),
-                                                             Color = character(),
-                                                             Shape = character(),
-                                                             Stroke = character(),
-                                                             Stroke_Width = numeric(),
-                                                             Clabel =  character())
-  group_names <- selected_kinome() %>%
-    select(Kinase_Group) %>%
-    distinct()
-
-
-  kgroups <- left_join(group_names, kgroups, by = join_by(Kinase_Group == Name)) %>%
-    transmute(Name = paste("Group", Kinase_Group),
-              Size = Size,
-              Shape = Shape,
-              Color = Color,
-              Stroke = Stroke,
-              Stroke_Width = Stroke_Width,
-              Clabel = Clabel) %>%
-    mutate(Size = case_when(Size == 0 ~ NA,
-                            .default = Size)) %>%
-    mutate(Color = case_when(Color == "" ~ "#000000",
-                             .default = Color)) %>%
-    mutate(Shape = case_when(Shape == "" ~ "circle",
-                             .default = Shape)) %>%
-    mutate(Shape = pointshape(Shape)) %>%
-    mutate(Stroke = case_when(Stroke == "" ~ Color,
-                              .default = Stroke))
-
-  #families
-  kfams <- hot_to_r(input$family_nodes_hot) %||% data.frame(Name = character(),
-                                                            Size = numeric(),
-                                                            Color = character(),
-                                                            Shape = character(),
-                                                            Stroke = character(),
-                                                            Stroke_Width = numeric(),
-                                                            Clabel =  character())
-  family_names <- selected_kinome() %>%
-    select(Kinase_Family) %>%
-    distinct()
-
-
-  kfams <- left_join(family_names, kfams, by = join_by(Kinase_Family == Name)) %>%
-    transmute(Name = paste("Family", Kinase_Family),
-              Size = Size,
-              Shape = Shape,
-              Color = Color,
-              Stroke = Stroke,
-              Stroke_Width = Stroke_Width,
-              Clabel = Clabel)  %>%
-    mutate(Size = case_when(Size == 0 ~ NA,
-                            .default = Size)) %>%
-    mutate(Color = case_when(Color == "" ~ "#000000",
-                             .default = Color)) %>%
-    mutate(Shape = case_when(Shape == "" ~ "circle",
-                             .default = Shape)) %>%
-    mutate(Shape = pointshape(Shape)) %>%
-    mutate(Stroke = case_when(Stroke == "" ~ Color,
-                              .default = Stroke))
-
-
-  #subfamilies
-  ksubfams <- hot_to_r(input$subfamily_nodes_hot) %||% data.frame(Name = character(),
-                                                                  Size = numeric(),
-                                                                  Color = character(),
-                                                                  Shape = character(),
-                                                                  Stroke = character(),
-                                                                  Stroke_Width = numeric(),
-                                                                  Clabel =  character())
-  subfamily_names <- selected_kinome() %>%
-    select(Kinase_Subfamily) %>%
-    distinct()
-
-
-  ksubfams <- left_join(subfamily_names, ksubfams, by = join_by(Kinase_Subfamily == Name)) %>%
-    transmute(Name = paste("Subfamily", Kinase_Subfamily),
-              Size = Size,
-              Shape = Shape,
-              Color = Color,
-              Stroke = Stroke,
-              Stroke_Width = Stroke_Width,
-              Clabel = Clabel) %>%
-    mutate(Size = case_when(Size == 0 ~ NA,
-                            .default = Size)) %>%
-    mutate(Color = case_when(Color == "" ~ "#000000",
-                             .default = Color)) %>%
-    mutate(Shape = case_when(Shape == "" ~ "circle",
-                             .default = Shape)) %>%
-    mutate(Shape = pointshape(Shape)) %>%
-    mutate(Stroke = case_when(Stroke == "" ~ Color,
-                              .default = Stroke))
-
-
-  combined_df <- rbind(kinases, kgroups, kfams, ksubfams)
+  rbind(kinases, kgroups, kfams, ksubfams)
 }
 
 ne_rhot_to_df_helper <- function(ne_rhot, which_ne, kinome_df, prefix) {
