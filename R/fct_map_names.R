@@ -33,7 +33,6 @@ map_names <- function(kinome_data, species_selection, kinase_names, aliases) {
 #' @return a subset of `df` which only contains the `indices`.
 #'
 #' @noRd
-#'
 select_rows_int <- function(indices, df) {
   df[indices, ]
 }

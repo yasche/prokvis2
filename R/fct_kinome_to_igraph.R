@@ -1,4 +1,4 @@
-#' kinome_df_to_igraph_helper
+#' kinome_df_to_igraph
 #'
 #' @description Turns a kinome df into an `igraph` object.
 #'
@@ -8,7 +8,7 @@
 #'
 #' @noRd
 kinome_df_to_igraph <- function(kinome_df) {
-  #'Group ', 'Family ', 'Subfamily 'are because sometimes kinase name and subfamily etc are the same. this avoids circular connections
+  #"Group ", "Family ", "Subfamily " are because sometimes kinase name and subfamily etc are the same. this avoids circular connections
 
   #Branch length is added as metadata to later be extracted:
   #Origin -> Group -> Family -> Subfamily -> Kinase
