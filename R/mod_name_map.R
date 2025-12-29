@@ -46,7 +46,7 @@ mod_name_map_server <- function(id, kinome_data){
     output$download_namemap <- shiny::downloadHandler(
       filename = function() {"namemap.csv"},
       content = function(file){
-        write_csv(reactive_download_namemap(), file)
+        readr::write_csv(reactive_download_namemap(), file)
       }
     )
   })
