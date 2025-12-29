@@ -1,8 +1,11 @@
-#' kinome_df_to_circular
+#' kinome_to_igraph
 #'
-#' @description A fct function
+#' @description Turns the selected kinome (via the `species_selection` argument) into an `igraph` object.
 #'
-#' @return The return value, if any, from executing the function.
+#' @param kinome_data A `kinome_data` object
+#' @param species_selection The two-letter code of the selected species.
+#'
+#' @return A network representation of the kinome as an `igraph` object.
 #'
 #' @noRd
 kinome_to_igraph <- function(kinome_data, species_selection) {
@@ -11,6 +14,15 @@ kinome_to_igraph <- function(kinome_data, species_selection) {
   kinome_df_to_igraph_helper(kinome_df)
 }
 
+#' kinome_df_to_igraph_helper
+#'
+#' @description helper function to be used with `kinome_to_igraph`
+#'
+#' @param kinome_df A kinome data frame of the selected species
+#'
+#' @return A network representation of the kinome as an `igraph` object.
+#'
+#' @noRd
 kinome_df_to_igraph_helper <- function(kinome_df) {
   #'Group ', 'Family ', 'Subfamily 'are because sometimes kinase name and subfamily etc are the same. this avoids circular connections
 
