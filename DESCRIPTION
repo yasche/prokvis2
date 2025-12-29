@@ -24,7 +24,9 @@ Imports:
     rlang,
     scico,
     shiny,
-    stringr
+    stringr,
+    tibble,
+    treeio
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.3
