@@ -1,8 +1,11 @@
 #' nodes_and_edges
 #'
-#' @description A fct function
+#' @description Create a rhot to manually change node and edge behavior.
 #'
-#' @return The return value, if any, from executing the function.
+#' @param kinome_df A kinome data frame created with `extract_kinome_df()`
+#' @param which_ne A character defining which node or edge to create a rhot for: c("Manning_Name", "Kinase_Subfamily", "Kinase_Family", "Kinase_Group").
+#'
+#' @return An rhot to manually edit node and edge behavior.
 #'
 #' @noRd
 nodes_and_edges <- function(kinome_df, which_ne) {
