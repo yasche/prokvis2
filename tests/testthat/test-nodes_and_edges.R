@@ -72,3 +72,9 @@ test_that("ne_rhot_to_df_helper gives data frames with correct names if first ar
   expect_true(is_empty(setdiff(ksubfamilydf, expected_subfamily)))
   expect_true(is_empty(setdiff(expected_subfamily, ksubfamilydf)))
 })
+
+test_that("combine_nodes_and_edges gives an empty data frames if args are NULL", {
+  df <- combine_nodes_and_edges(NULL, NULL, NULL, NULL, extract_kinome_df(kinome_data, "hs")) %>% select(-Name) %>% as.matrix() %>% is.na()
+
+  expect_true(all(df == TRUE))
+})
