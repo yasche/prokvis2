@@ -117,7 +117,7 @@ mod_plots_ui <- function(id, plot_tab, kinome_data) {
       # the page content goes here
       if (plot_tab == "circular") {
         #"the plot is circular",
-        textOutput(ns("test_spec_selected"))
+        shiny::plotOutput(ns("plot_circular"))
       },
       if (plot_tab == "network") {
         "the plot is network"
@@ -145,6 +145,22 @@ mod_plots_ui <- function(id, plot_tab, kinome_data) {
 mod_plots_server <- function(id, kinome_data){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
+
+    reactive_kinome_df <- shiny::reactive({
+      extract_kinome_df(kinome_data, input$species_selection)
+    })
+
+    reactive_plot_circular_base <- shiny::reactive({
+      plot_circular_base(reactive_kinome_df())
+    })
+
+    reactive_plot_circular_mod <- shiny::reactive({
+      ggtree::ggtree(reactive_plot_circular_base())
+    })
+
+    output$plot_circular <- shiny::renderPlot({
+      reactive_plot_circular_mod()
+    })
 
     output$ui_custom_color_pal <- shiny::renderUI({
       if (input$color_palette == "Custom") {
