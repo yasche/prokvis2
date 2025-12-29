@@ -47,7 +47,7 @@ mod_plots_ui <- function(id, plot_tab, kinome_data) {
                   shiny::tags$br(),
                   shiny::actionButton(ns("edit_families_action_button"), "Edit family nodes", width = "100%"),
                   shiny::tags$br(),
-                  shiny::actionButton(ns("edit_sub_families_action_button"), "Edit subfamily nodes", width = "100%")
+                  shiny::actionButton(ns("edit_subfamilies_action_button"), "Edit subfamily nodes", width = "100%")
                 )
               }
             ),
@@ -150,6 +150,8 @@ mod_plots_server <- function(id, kinome_data){
       extract_kinome_df(kinome_data, input$species_selection)
     })
 
+
+    # start code for the circular plot
     reactive_plot_circular_base <- shiny::reactive({
       plot_circular_base(reactive_kinome_df())
     })
@@ -161,7 +163,94 @@ mod_plots_server <- function(id, kinome_data){
     output$plot_circular <- shiny::renderPlot({
       reactive_plot_circular_mod()
     })
+    # end code for the circular plot
 
+    # start code for the manual editing of nodes and edges
+    reactive_kinase_edges_rhot <- shiny::reactive({
+      nodes_and_edges(reactive_kinome_df(), "Manning_Name")
+    })
+
+    reactive_subfamily_nodes_rhot <- shiny::reactive({
+      nodes_and_edges(reactive_kinome_df(), "Kinase_Subfamily")
+    })
+
+    reactive_family_nodes_rhot <- shiny::reactive({
+      nodes_and_edges(reactive_kinome_df(), "Kinase_Family")
+    })
+
+    reactive_group_nodes_rhot <- shiny::reactive({
+      nodes_and_edges(reactive_kinome_df(), "Kinase_Group")
+    })
+
+    output$kinase_edges_hot <- rhandsontable::renderRHandsontable({
+      reactive_kinase_edges_rhot()
+    })
+
+    output$group_nodes_hot <- rhandsontable::renderRHandsontable({
+      reactive_group_nodes_rhot()
+    })
+
+    output$family_nodes_hot <- rhandsontable::renderRHandsontable({
+      reactive_family_nodes_rhot()
+    })
+
+    output$subfamily_nodes_hot <- rhandsontable::renderRHandsontable({
+      reactive_subfamily_nodes_rhot()
+    })
+
+    shiny::observeEvent(input$edit_kinases_action_button, {
+      shiny::showModal(shiny::modalDialog(
+        title = "Edit kinase edges",
+        list(
+          shiny::HTML("<p>
+                <b>Name:</b> The Manning name of the kinase. Other identifiers can be mapped to the corresponding Manning name in the Name Mapping tab.<br>
+                <b>Size:</b> The size of the point (or other shape). Can be used to represent quantitative data (e.g., IC<sub>50</sub> or <i>K</i><sub>D</sub> values).<br>
+                <b>Color:</b> The inner color of the point (or other shape). Can be used to represent quantitative or qualitative data.<br>
+                <b>Shape:</b> The shape. Can be used to represent qualitative data.<br>
+                <b>Stroke:</b> The color of the border around the point (or other shape).<br>
+                <b>Stroke_Width:</b> The width of the border around the point (or other shape).<br>
+                <b>Clabel:</b> A custom label. Label source must be set to Custom in the Label Settings to take effect.
+             </p>"),
+          rhandsontable::rHandsontableOutput(ns("kinase_edges_hot"))
+        ),
+        size = "xl",
+        easyClose = TRUE,
+        fade = TRUE
+      ))
+    })
+
+    shiny::observeEvent(input$edit_groups_action_button, {
+      shiny::showModal(shiny::modalDialog(
+        title = "Edit kinase edges",
+        rhandsontable::rHandsontableOutput(ns("group_nodes_hot")),
+        size = "xl",
+        easyClose = TRUE,
+        fade = TRUE
+      ))
+    })
+
+    shiny::observeEvent(input$edit_families_action_button, {
+      shiny::showModal(shiny::modalDialog(
+        title = "Edit kinase edges",
+        rhandsontable::rHandsontableOutput(ns("family_nodes_hot")),
+        size = "xl",
+        easyClose = TRUE,
+        fade = TRUE
+      ))
+    })
+
+    shiny::observeEvent(input$edit_subfamilies_action_button, {
+      shiny::showModal(shiny::modalDialog(
+        title = "Edit kinase edges",
+        rhandsontable::rHandsontableOutput(ns("subfamily_nodes_hot")),
+        size = "xl",
+        easyClose = TRUE,
+        fade = TRUE
+      ))
+    })
+    # start code for the manual editing of nodes and edges
+
+    # start code for server-side UI elements
     output$ui_custom_color_pal <- shiny::renderUI({
       if (input$color_palette == "Custom") {
         "the palette is custom"
@@ -224,6 +313,7 @@ mod_plots_server <- function(id, kinome_data){
         }
       }
     })
+    # end code for server-side UI elements
 
     output$test_spec_selected <- renderText({
       input$species_selection
