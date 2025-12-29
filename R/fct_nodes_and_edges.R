@@ -18,6 +18,15 @@ nodes_and_edges <- function(kinome_df, which_ne) {
     ne_df_to_rhot_helper(ne_names)
 }
 
+#' ne_df_helper
+#'
+#' @description Create an empty data frame with `length(ne_names)` rows.
+#'
+#' @param ne_names A character vector containing the node & edge names
+#'
+#' @return An empty data frame with `length(ne_names)` rows.
+#'
+#' @noRd
 ne_df_helper <- function(ne_names) {
   ne_names_length <- length(ne_names)
 
@@ -30,6 +39,16 @@ ne_df_helper <- function(ne_names) {
              Clabel =  character(length = ne_names_length))
 }
 
+#' ne_df_helper
+#'
+#' @description Convert the data frame created with `ne_df_helper()` to an rhot.
+#'
+#' @param ne_df An empty data frame created with `ne_df_helper()`
+#' @param ne_names A character vector containing the node & edge names
+#'
+#' @return An empty rhot.
+#'
+#' @noRd
 ne_df_to_rhot_helper <- function(ne_df, ne_names) {
   ne_df %>%
     rhandsontable::rhandsontable(width = "100%") %>%
