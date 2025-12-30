@@ -87,8 +87,8 @@ mod_plots_ui <- function(id, plot_tab, kinome_data) {
 
               if (plot_tab == "network") {
                 list(
-                  shiny::numericInput(ns("nudge_kinase_label_X"), "Nudge kinase label X", value = 0, step = 0.001),
-                  shiny::numericInput(ns("nudge_kinase_label_Y"), "Nudge kinase label Y", value = 0, step = 0.001)
+                  shiny::numericInput(ns("nudge_kinase_label_x"), "Nudge kinase label X", value = 0, step = 0.001),
+                  shiny::numericInput(ns("nudge_kinase_label_y"), "Nudge kinase label Y", value = 0, step = 0.001)
                 )
               },
 
