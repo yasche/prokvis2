@@ -307,7 +307,6 @@ mod_plots_server <- function(id, kinome_data){
     })
     ## end code for custom group color pal
 
-
     output$ui_default_branch_color <- shiny::renderUI({
       shiny::conditionalPanel(
         condition = "input.color_branches_groups == false",
@@ -336,14 +335,24 @@ mod_plots_server <- function(id, kinome_data){
       )
     })
 
+    reactive_kinases <- shiny::reactive({
+      selected_kinome <- reactive_kinome_df()
+      selected_kinome$Manning_Name
+    })
+
     output$ui_manual_selection_input <- shiny::renderUI({
       shiny::conditionalPanel(
         condition = "input.show_kinases_labels == 'Manual selection'",
         # Server code missing!
-        "The selection is set to Manual",
+        shiny::selectizeInput(ns("kinase_labels_manual_selection"), "", reactive_kinases(), multiple = TRUE),
         ns = ns
       )
     })
+
+    output$manual_annotation_selection_input <- renderUI({
+
+    })
+
 
     output$ui_group_label_size <- shiny::renderUI({
       shiny::conditionalPanel(
@@ -377,7 +386,6 @@ mod_plots_server <- function(id, kinome_data){
     output$ui_np_group_label_position <- shiny::renderUI({
       shiny::conditionalPanel(
         condition = "input.show_group_labels == true & input.adjust_np_pos_manually == true",
-        # Server code is still missing!
         manual_group_label_pos_input(
           custom_xy = reactive_custom_xy(),
           kinase_groups = reactive_kinase_groups(),
