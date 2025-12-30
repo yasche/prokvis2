@@ -5,12 +5,12 @@
 #' @return The return value, if any, from executing the function.
 #'
 #' @noRd
-custom_group_color_input <- function(custom_color_nums, kinase_groups, ns) {
+custom_group_color_input <- function(custom_color_nums, kinase_groups, ns, id) {
   list(
     #partly adapted from https://mastering-shiny.org/action-dynamic.html
     "Choose a custom color for each group",
     shiny::HTML("<br><br>"),
-    purrr::map(custom_color_nums, ~ colourpicker::colourInput(ns(.x), kinase_groups[as.numeric(stringr::str_remove(.x, "custom_group_col"))], value = "#BEBEBE"))
+    purrr::map(ns(custom_color_nums), ~ colourpicker::colourInput(.x, kinase_groups[as.numeric(stringr::str_remove(.x, paste0(id, "-custom_group_col", collapse = "")))], value = "#BEBEBE"))
   )
 }
 

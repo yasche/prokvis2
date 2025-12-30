@@ -258,7 +258,9 @@ mod_plots_server <- function(id, kinome_data){
 
     # start code for server-side UI elements
     ## start code for custom group color pal
+
     #output$ui_custom_color_pal_tf <- shiny::renderUI({
+    # switched to conditionalPanel to prevent re-run each time palette is changed
     #  col_ui_element <- list(
     #    #partly adapted from https://mastering-shiny.org/action-dynamic.html
     #    "Choose a custom color for each group",
@@ -274,12 +276,7 @@ mod_plots_server <- function(id, kinome_data){
     output$ui_custom_color_pal <- shiny::renderUI({
       shiny::conditionalPanel(
         condition = "input.color_palette == 'Custom'",
-        list(
-          #partly adapted from https://mastering-shiny.org/action-dynamic.html
-          "Choose a custom color for each group",
-          shiny::HTML("<br><br>"),
-          purrr::map(ns(reactive_custom_color_nums()), ~ colourpicker::colourInput(.x, reactive_kinase_groups()[as.numeric(stringr::str_remove(.x, paste0(id, "-custom_group_col", collapse = "")))], value = "#BEBEBE"))
-        ),
+        custom_group_color_input(custom_color_nums = reactive_custom_color_nums(), kinase_groups = reactive_kinase_groups(), ns = ns, id = id),
         ns = ns
       )
     })
