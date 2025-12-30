@@ -158,6 +158,12 @@ mod_plots_server <- function(id, kinome_data){
 
     reactive_plot_circular_mod <- shiny::reactive({
       ggtree::ggtree(reactive_plot_circular_base())
+
+      cols <- purrr::map_chr(reactive_custom_color_nums(), ~ input[[.x]] %||% "")
+      # convert empty inputs to transparent
+      cols[cols == ""] <- NA
+
+      print(cols)
     })
 
     output$plot_circular <- shiny::renderPlot({
@@ -251,11 +257,30 @@ mod_plots_server <- function(id, kinome_data){
     # start code for the manual editing of nodes and edges
 
     # start code for server-side UI elements
+    ## start code for custom group color pal
     output$ui_custom_color_pal <- shiny::renderUI({
       if (input$color_palette == "Custom") {
-        "the palette is custom"
+
+        list(
+          #partly adapted from https://mastering-shiny.org/action-dynamic.html
+          "Choose a custom color for each group",
+          shiny::HTML("<br><br>"),
+          purrr::map(ns(reactive_custom_color_nums()), ~ colourpicker::colourInput(.x, reactive_kinase_groups()[as.numeric(stringr::str_remove(stringr::str_split_i(.x, "\\-", 2), "custom_group_col"))], value = "#BEBEBE"))
+        )
       }
     })
+
+    reactive_kinase_groups <- shiny::reactive({
+      extract_kinase_groups(reactive_kinome_df())
+    })
+
+    reactive_custom_color_nums <- shiny::reactive({
+      kinase_groups_to_custom_color_numbers(reactive_kinase_groups())
+    })
+
+
+    ## end code for custom group color pal
+
 
     output$ui_default_branch_color <- shiny::renderUI({
       if(input$color_branches_groups == FALSE) {
