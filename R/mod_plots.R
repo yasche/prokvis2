@@ -166,6 +166,8 @@ mod_plots_server <- function(id, kinome_data){
 
       print(cols)
 
+      print(input)
+
       p
     })
 
@@ -325,6 +327,7 @@ mod_plots_server <- function(id, kinome_data){
     output$ui_manual_selection_input <- shiny::renderUI({
       shiny::conditionalPanel(
         condition = "input.show_kinases_labels == 'Manual selection'",
+        # Server code missing!
         "The selection is set to Manual",
         ns = ns
       )
@@ -354,14 +357,25 @@ mod_plots_server <- function(id, kinome_data){
       )
     })
 
+    ## start code for custom group label position in network plot
+    reactive_custom_xy <- shiny::reactive({
+      kinase_groups_to_custom_xy(reactive_kinase_groups())
+    })
+
     output$ui_np_group_label_position <- shiny::renderUI({
       shiny::conditionalPanel(
         condition = "input.show_group_labels == true & input.adjust_np_pos_manually == true",
         # Server code is still missing!
-        "np group label positions are set to manual",
+        manual_group_label_pos_input(
+          custom_xy = reactive_custom_xy(),
+          kinase_groups = reactive_kinase_groups(),
+          id = id,
+          ns = ns
+        ),
         ns = ns
       )
     })
+    ## end code for custom group label position in network plot
     # end code for server-side UI elements
 
     output$test_spec_selected <- renderText({
