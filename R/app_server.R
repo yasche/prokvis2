@@ -6,7 +6,7 @@
 #' @noRd
 app_server <- function(input, output, session) {
   if (is.null(golem::get_golem_options("custom_kinome_data"))) {
-    use_kinome_data <- kinome_data
+    use_kinome_data <- prokvis2::kinome_data
   } else {
     # add dedicated read function with sanity check and diagnostic messages later
     use_kinome_data <- readr::read_rds(golem::get_golem_options("custom_kinome_data"))
