@@ -31,7 +31,7 @@ custom_group_color_input <- function(custom_color_nums, kinase_groups, ns, id) {
 #' @noRd
 extract_kinase_groups <- function(kinome_df) {
   kinome_df %>%
-    pull("Kinase_Group") %>%
+    dplyr::pull("Kinase_Group") %>%
     unique()
 }
 

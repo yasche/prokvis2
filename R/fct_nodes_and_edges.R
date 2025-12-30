@@ -84,7 +84,7 @@ ne_rhot_to_df_helper <- function(ne_rhot, which_ne, kinome_df, prefix) {
     dplyr::select({{ which_ne }}) %>%
     dplyr::distinct()
 
-  ne_df <- dplyr::left_join(ne_names, ne_df, by = join_by({{ which_ne }} == "Name"), multiple = "first")
+  ne_df <- dplyr::left_join(ne_names, ne_df, by = dplyr::join_by({{ which_ne }} == "Name"), multiple = "first")
 
   if (is.null(prefix)) {
     ne_df_names <- ne_df[[which_ne]]
@@ -94,17 +94,17 @@ ne_rhot_to_df_helper <- function(ne_rhot, which_ne, kinome_df, prefix) {
 
   ne_df %>%
     dplyr::transmute(Name = .env$ne_df_names,
-                     Size = Size,
-                     Shape = Shape,
-                     Color = Color,
-                     Stroke = Stroke,
-                     Stroke_Width = Stroke_Width,
-                     Clabel = Clabel) %>%
-    dplyr::mutate(Size = case_when(Size == 0 ~ NA, .default = Size)) %>%
-    dplyr::mutate(Color = case_when(Color == "" ~ "#000000", .default = Color)) %>%
-    dplyr::mutate(Shape = case_when(Shape == "" ~ "circle", .default = Shape)) %>%
-    dplyr::mutate(Shape = pointshape(Shape)) %>%
-    dplyr::mutate(Stroke = case_when(Stroke == "" ~ Color, .default = Stroke))
+                     Size = .data$Size,
+                     Shape = .data$Shape,
+                     Color = .data$Color,
+                     Stroke = .data$Stroke,
+                     Stroke_Width = .data$Stroke_Width,
+                     Clabel = .data$Clabel) %>%
+    dplyr::mutate(Size = dplyr::case_when(Size == 0 ~ NA, .default = .data$Size)) %>%
+    dplyr::mutate(Color = dplyr::case_when(Color == "" ~ "#000000", .default = .data$Color)) %>%
+    dplyr::mutate(Shape = dplyr::case_when(Shape == "" ~ "circle", .default = .data$Shape)) %>%
+    dplyr::mutate(Shape = pointshape(.data$Shape)) %>%
+    dplyr::mutate(Stroke = dplyr::case_when(Stroke == "" ~ Color, .default = .data$Stroke))
 }
 
 
