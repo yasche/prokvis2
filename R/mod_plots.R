@@ -31,6 +31,7 @@ mod_plots_ui <- function(id, plot_tab, kinome_data) {
                 list(
                   shiny::selectInput(ns("phylo_tree_layout"), "Tree layout", choices = c("fan", "circular", "radial", "equal_angle", "daylight", "ape")),
                   shiny::selectInput(ns("phylo_branch_scaling"), "Scale branch length", choices = c("None", "log10", "True length")),
+                  shiny::sliderInput(ns("phylo_atypical_length"), "Atypical kinase plot length (inverse)", min = 0.1, max = 2, step = 0.05, value = 0.8),
                   shiny::checkboxInput(ns("adjust_legend_pos_man"), "Adjust legend position manually", value = FALSE),
                   shiny::uiOutput(ns("ui_adjust_legend_pos"))
                 )
@@ -157,13 +158,15 @@ mod_plots_server <- function(id, kinome_data){
     })
 
     reactive_plot_circular_mod <- shiny::reactive({
-      ggtree::ggtree(reactive_plot_circular_base())
+      p <- ggtree::ggtree(reactive_plot_circular_base())
 
       cols <- purrr::map_chr(reactive_custom_color_nums(), ~ input[[.x]] %||% "")
       # convert empty inputs to transparent
       cols[cols == ""] <- NA
 
       print(cols)
+
+      p
     })
 
     output$plot_circular <- shiny::renderPlot({
@@ -288,66 +291,76 @@ mod_plots_server <- function(id, kinome_data){
     reactive_custom_color_nums <- shiny::reactive({
       kinase_groups_to_custom_color_numbers(reactive_kinase_groups())
     })
-
-
     ## end code for custom group color pal
 
 
     output$ui_default_branch_color <- shiny::renderUI({
-      if(input$color_branches_groups == FALSE) {
-        colourpicker::colourInput(ns("default_branch_color"), "Default branch color", value = "grey")
-      }
+      shiny::conditionalPanel(
+        condition = "input.color_branches_groups == false",
+        colourpicker::colourInput(ns("default_branch_color"), "Default branch color", value = "grey"),
+        ns = ns
+      )
     })
 
     output$ui_adjust_legend_pos <- shiny::renderUI({
-      if (input$adjust_legend_pos_man == TRUE) {
+      shiny::conditionalPanel(
+        condition = "input.adjust_legend_pos_man == true",
         list(
           shiny::HTML("Legend position"),
           shiny::numericInput(ns("phylo_legend_x"), "x", min = 0, value = 1, step = 0.05),
-          shiny::numericInput(ns("phylo_legend_y"), "y", min = 0, value = 0.5, step = 0.05),
-          shiny::sliderInput(ns("phylo_atypical_length"), "Atypical kinase plot length (inverse)", min = 0.1, max = 2, step = 0.05, value = 0.8)
-        )
-      }
+          shiny::numericInput(ns("phylo_legend_y"), "y", min = 0, value = 0.5, step = 0.05)
+        ),
+        ns = ns
+      )
     })
 
     output$ui_default_label_color <- shiny::renderUI({
-      if (input$color_kinase_labels_groups == FALSE) {
-        colourpicker::colourInput(ns("default_label_color"), "Default label color", value = "grey")
-      }
+      shiny::conditionalPanel(
+        condition = "input.color_kinase_labels_groups == false",
+        colourpicker::colourInput(ns("default_label_color"), "Default label color", value = "grey"),
+        ns = ns
+      )
     })
 
     output$ui_manual_selection_input <- shiny::renderUI({
-      if (input$show_kinases_labels == "Manual selection") {
-        # Server code is still missing!
-        "The selection is set to Manual"
-      }
+      shiny::conditionalPanel(
+        condition = "input.show_kinases_labels == 'Manual selection'",
+        "The selection is set to Manual",
+        ns = ns
+      )
     })
 
     output$ui_group_label_size <- shiny::renderUI({
-      if (input$show_group_labels == TRUE) {
-        shiny::numericInput(ns("group_label_size"), "Group label size", value = 5, step = 0.5)
-      }
+      shiny::conditionalPanel(
+        condition = "input.show_group_labels == true",
+        shiny::numericInput(ns("group_label_size"), "Group label size", value = 5, step = 0.5),
+        ns = ns
+      )
     })
 
     output$ui_group_label_radius <- shiny::renderUI({
-      if (input$show_group_labels == TRUE) {
-        shiny::numericInput(ns("group_label_radius"), "Group label radius", value = 1, step = 0.1)
-      }
+      shiny::conditionalPanel(
+        condition = "input.show_group_labels == true",
+        shiny::numericInput(ns("group_label_radius"), "Group label radius", value = 1, step = 0.1),
+        ns = ns
+      )
     })
 
     output$ui_adjust_np_pos_manually <- shiny::renderUI({
-      if (input$show_group_labels == TRUE) {
-        shiny::checkboxInput(ns("adjust_np_pos_manually"), "Adjust the label position for each group manually", value = FALSE)
-      }
+      shiny::conditionalPanel(
+        condition = "input.show_group_labels == true",
+        shiny::checkboxInput(ns("adjust_np_pos_manually"), "Adjust the label position for each group manually", value = FALSE),
+        ns = ns
+      )
     })
 
     output$ui_np_group_label_position <- shiny::renderUI({
-      if (!is.null(input$adjust_np_pos_manually)) {
-        if (input$show_group_labels == TRUE & input$adjust_np_pos_manually == TRUE) {
-          # Server code is still missing!
-          "np group label positions are set to manual"
-        }
-      }
+      shiny::conditionalPanel(
+        condition = "input.show_group_labels == true & input.adjust_np_pos_manually == true",
+        # Server code is still missing!
+        "np group label positions are set to manual",
+        ns = ns
+      )
     })
     # end code for server-side UI elements
 
