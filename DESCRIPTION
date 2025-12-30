@@ -1,12 +1,12 @@
 Package: prokvis2
-Title: An Amazing Shiny App
+Title: Intuitive Visualizations of Kinome Data
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Yannik",
            family = "Schermer",
            role = c("aut", "cre", "cph"),
-           email = "your@email.com")
-Description: What the package does (one paragraph).
+           email = "mail@yannik.science")
+Description: A feature-rich 'Shiny' application to create intuitive visualizations of kinome data, similar to KinMap (Eid et al. (2017) <doi:10.1186/s12859-016-1433-7>) and CORAL (Metz et al. (2018) <doi:10.1016/j.cels.2018.07.001>). Whereas other solutions only permit the visualization human kinome data, 'prokvis2' also enables the visualization of kinome data from other model organisms. Kinase data was derived from several publications (Caenepeel et al. (2004) <doi:10.1073/pnas.0306880101>, Manning et al. (2002) <doi:10.1126/science.1075762>).
 License: MIT + file LICENSE
 Imports: 
     bsicons,
