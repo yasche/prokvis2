@@ -1,8 +1,13 @@
 #' manual_group_label_pos_input
 #'
-#' @description A fct function
+#' @description Wrapper function to create inputs in case a custom nudge for group labels is enabled in network plot.
 #'
-#' @return The return value, if any, from executing the function.
+#' @param custom_xy  A character vector containing the groups encoded by a unique number and the prefix "custom_group_pos_x" or "custom_group_pos_y". Created with `kinase_groups_to_custom_xy()`.
+#' @param kinase_groups A character vector containing the kinase group names. Created with `extract_kinase_groups()`.
+#' @param ns The namespace `ns`.
+#' @param id The module id.
+#'
+#' @return An input to be used in a UI.
 #'
 #' @noRd
 manual_group_label_pos_input <- function(custom_xy, kinase_groups, ns, id) {
@@ -17,6 +22,15 @@ manual_group_label_pos_input <- function(custom_xy, kinase_groups, ns, id) {
   )
 }
 
+#' kinase_groups_to_custom_xy
+#'
+#' @description Helper function to turn kinase groups into unique numbers with prefix "custom_group_pos_x" and "custom_group_pos_y".
+#'
+#' @param kinase_groups A character vector containing the kinase groups, created with `extract_kinase_groups()`
+#'
+#' @return A character vector containing the kinase groups encoded by a unique number and prefix "custom_group_pos_x" and "custom_group_pos_y".
+#'
+#' @noRd
 kinase_groups_to_custom_xy <- function(kinase_groups) {
   seq_len_kinase_groups <- 1:length(kinase_groups)
 
