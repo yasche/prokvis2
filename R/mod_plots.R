@@ -160,11 +160,23 @@ mod_plots_server <- function(id, kinome_data){
     reactive_plot_circular_mod <- shiny::reactive({
       p <- ggtree::ggtree(reactive_plot_circular_base())
 
+      # access custom color palette
       cols <- purrr::map_chr(reactive_custom_color_nums(), ~ input[[.x]] %||% "")
       # convert empty inputs to transparent
       cols[cols == ""] <- NA
 
       print(cols)
+
+      # access custom x/y nudge for group labels in network plot
+      pos_nudge <- purrr::map_dbl(reactive_custom_xy(), ~ input[[.x]] %||% 0) %>%
+        matrix(nrow = length(.) / 2, ncol = 2, byrow = TRUE)
+
+      colnames(pos_nudge) <- c("x_nudge", "y_nudge")
+
+      pos_nudge <- tibble::as_tibble(pos_nudge) %>%
+        dplyr::mutate(label = reactive_kinase_groups())
+
+      print(pos_nudge)
 
       print(input)
 
