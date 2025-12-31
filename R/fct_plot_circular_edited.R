@@ -239,12 +239,14 @@ plot_circular_edited <- function(circular_base,
       dplyr::mutate(x = .data$x * 4.5 * .env$group_label_radius) %>%
       dplyr::filter(grepl("^Group [A-Za-z0-9]{1,}$", .data$label2)) %>%
       dplyr::mutate(label = stringr::str_remove_all(.data$label2, "^Group "))
+
+
+    if (show_group_labels == TRUE) {
+      p <- p + ggtree::geom_text(data = group_labels, ggtree::aes(x = .data$x, y = .data$y, color = .data$label, label = .data$label), size = group_label_size)#, family = input$chosenFont) #Add font later
+    }
   }
 
 
-  if (show_group_labels == TRUE) {
-    p <- p + ggtree::geom_text(data = group_labels, ggtree::aes(x = .data$x, y = .data$y, color = .data$label, label = .data$label), size = group_label_size)#, family = input$chosenFont) #Add font later
-  }
   p <- p + ggplot2::labs(colour = "Kinase Group")+
     ggplot2::labs(fill = "Kinase Group")
 
