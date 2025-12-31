@@ -256,8 +256,8 @@ plot_circular_edited <- function(circular_base,
   #interactive mode can't handle other fonts in legend for some reason...
   #if (input$staticInteractive == "static") {
   #add font later
-    p <- p + ggtree::theme(legend.text = element_text(size = legend_label_size),# family = input$chosenFont),
-                   legend.title = element_text(size = legend_title_size))#, family = input$chosenFont))
+    p <- p + ggtree::theme(legend.text = ggplot2::element_text(size = legend_label_size),# family = input$chosenFont),
+                   legend.title = ggplot2::element_text(size = legend_title_size))#, family = input$chosenFont))
   #}
 
   #theme(legend.text = element_text(size = input$legendLabelSize, family = input$chosenFont),
@@ -322,7 +322,7 @@ get_mrcas <- function(kinome_df, circular_base){
   for(i in 1:length(kgroups)) {
     curr_mrca <- kinome_df %>%
       dplyr::filter(.data$Kinase_Group == .env$kgroups[[i]]) %>%
-      dplyr::pull(Kinase_Family)
+      dplyr::pull("Kinase_Family")
 
     curr_mrca <- paste("Family ", curr_mrca, sep = "")
 
