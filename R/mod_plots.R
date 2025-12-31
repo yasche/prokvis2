@@ -23,7 +23,7 @@ mod_plots_ui <- function(id, plot_tab, kinome_data) {
               shiny::checkboxInput(ns("color_branches_groups"), "Color branches based on Groups", value = TRUE),
               shiny::uiOutput(ns("ui_default_branch_color")),
               shiny::numericInput(ns("branch_thickness"), "Branch thickness", min = 0, value = 0.15, step = 0.05),
-              shiny::checkboxInput(ns("hideLegend"), "Hide legend", value = FALSE),
+              shiny::checkboxInput(ns("hide_legend"), "Hide legend", value = FALSE),
               shiny::numericInput(ns("plot_height"), "Plot height in pixels", value = 1000),
               shiny::numericInput(ns("plot_width"), "Plot width in pixels", value = 1000),
 
