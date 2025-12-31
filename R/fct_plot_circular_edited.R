@@ -127,7 +127,7 @@ plot_circular_edited <- function(circular_base,
       dplyr::mutate(Uniprot_Gene_Name = dplyr::case_when(is.na(.data$label) ~ NA,
                                                          .default = .data$Uniprot_Gene_Name)) %>%
       dplyr::mutate(chosen_label = .data$Uniprot_Gene_Name) %>%
-      dplyr::mutate(chosen_label = .data$case_when(grepl("Origin|Group|Family|Subfamily", .data$label) ~ .data$label,
+      dplyr::mutate(chosen_label = dplyr::case_when(grepl("Origin|Group|Family|Subfamily", .data$label) ~ .data$label,
                                                    .default = .data$chosen_label)) %>%
       dplyr::mutate(label = .data$chosen_label) %>%
       dplyr::select(-"chosen_label")
@@ -139,7 +139,7 @@ plot_circular_edited <- function(circular_base,
                                                      .default = .data$Uniprot_Entry)) %>%
       dplyr::mutate(chosen_label = .data$Uniprot_Entry) %>%
       #preserve group, family, subfamily
-      dplyr::mutate(chosen_label = dplyr::case_when(grepl("Origin|Group|Family|Subfamily", .data$label) ~ .data$abel,
+      dplyr::mutate(chosen_label = dplyr::case_when(grepl("Origin|Group|Family|Subfamily", .data$label) ~ .data$label,
                                                     .default = .data$chosen_label)) %>%
       dplyr::mutate(label = .data$chosen_label) %>%
       dplyr::select(-"chosen_label")
@@ -233,11 +233,14 @@ plot_circular_edited <- function(circular_base,
     p <- p + ggplot2::scale_color_discrete(aesthetics = c("colour", "fill"), na.translate = F)
   }
 
-  group_labels <- p$data %>%
-    dplyr::select("label2", "x", "y", "angle") %>%
-    dplyr::mutate(x = .data$x * 4.5 * .env$group_label_radius) %>%
-    dplyr::filter(grepl("^Group [A-Za-z0-9]{1,}$", .data$label2)) %>%
-    dplyr::mutate(label = stringr::str_remove_all(.data$label2, "^Group "))
+  if (!is.null(group_label_radius)) {
+    group_labels <- p$data %>%
+      dplyr::select("label2", "x", "y", "angle") %>%
+      dplyr::mutate(x = .data$x * 4.5 * .env$group_label_radius) %>%
+      dplyr::filter(grepl("^Group [A-Za-z0-9]{1,}$", .data$label2)) %>%
+      dplyr::mutate(label = stringr::str_remove_all(.data$label2, "^Group "))
+  }
+
 
   if (show_group_labels == TRUE) {
     p <- p + ggtree::geom_text(data = group_labels, ggtree::aes(x = .data$x, y = .data$y, color = .data$label, label = .data$label), size = group_label_size)#, family = input$chosenFont) #Add font later
