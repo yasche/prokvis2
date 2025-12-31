@@ -36,10 +36,10 @@ test_that("Correct length for family & species = 'hs'", {
 
 
 test_that("ne_rhot_to_df_helper gives empty data frames if first arg is NULL for all node & edge types", {
-  kdf <- ne_rhot_to_df_helper(NULL, "Manning_Name", extract_kinome_df(kinome_data, "hs"), NULL) %>% dplyr::select(-"Name") %>% as.matrix() %>% is.na()
-  kgroupdf <- ne_rhot_to_df_helper(NULL, "Kinase_Group", extract_kinome_df(kinome_data, "hs"), "Group") %>% dplyr::select(-"Name") %>% as.matrix() %>% is.na()
-  kfamilydf <- ne_rhot_to_df_helper(NULL, "Kinase_Family", extract_kinome_df(kinome_data, "hs"), "Family") %>% dplyr::select(-"Name") %>% as.matrix() %>% is.na()
-  ksubfamilydf <- ne_rhot_to_df_helper(NULL, "Kinase_Subfamily", extract_kinome_df(kinome_data, "hs"), "Subfamily") %>% dplyr::select(-"Name") %>% as.matrix() %>% is.na()
+  kdf <- ne_rhot_to_df_helper(NULL, "Manning_Name", extract_kinome_df(kinome_data, "hs"), NULL) %>% dplyr::select(-"Name", -"id") %>% as.matrix() %>% is.na()
+  kgroupdf <- ne_rhot_to_df_helper(NULL, "Kinase_Group", extract_kinome_df(kinome_data, "hs"), "Group") %>% dplyr::select(-"Name", -"id") %>% as.matrix() %>% is.na()
+  kfamilydf <- ne_rhot_to_df_helper(NULL, "Kinase_Family", extract_kinome_df(kinome_data, "hs"), "Family") %>% dplyr::select(-"Name", -"id") %>% as.matrix() %>% is.na()
+  ksubfamilydf <- ne_rhot_to_df_helper(NULL, "Kinase_Subfamily", extract_kinome_df(kinome_data, "hs"), "Subfamily") %>% dplyr::select(-"Name", -"id") %>% as.matrix() %>% is.na()
 
   expect_true(all(kdf == TRUE))
   expect_true(all(kgroupdf == TRUE))
@@ -74,7 +74,7 @@ test_that("ne_rhot_to_df_helper gives data frames with correct names if first ar
 })
 
 test_that("combine_nodes_and_edges gives an empty data frames if args are NULL", {
-  df <- combine_nodes_and_edges(NULL, NULL, NULL, NULL, extract_kinome_df(kinome_data, "hs")) %>% dplyr::select(-"Name") %>% as.matrix() %>% is.na()
+  df <- combine_nodes_and_edges(NULL, NULL, NULL, NULL, extract_kinome_df(kinome_data, "hs")) %>% dplyr::select(-"Name", -"id") %>% as.matrix() %>% is.na()
 
   expect_true(all(df == TRUE))
 })
