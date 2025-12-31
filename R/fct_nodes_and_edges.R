@@ -94,27 +94,28 @@ ne_rhot_to_df_helper <- function(ne_rhot, which_ne, kinome_df, prefix) {
     ne_df_names <- paste(prefix, ne_df[[which_ne]], sep = "_")
   }
 
-  ne_df <- ne_df %>%
+  # add prefix as id column so it could in theory handle a Kinase that starts with "Group_"
+
+  if (is.null(prefix)) {
+    what_id <- "Kinase"
+  } else {
+    what_id <- prefix
+  }
+
+  ne_df %>%
     dplyr::transmute(Name = .env$ne_df_names,
                      Size = .data$Size,
                      Shape = .data$Shape,
                      Color = .data$Color,
                      Stroke = .data$Stroke,
                      Stroke_Width = .data$Stroke_Width,
-                     Clabel = .data$Clabel) %>%
+                     Clabel = .data$Clabel,
+                     id = .env$what_id) %>%
     dplyr::mutate(Size = dplyr::case_when(Size == 0 ~ NA, .default = .data$Size)) %>%
     dplyr::mutate(Color = dplyr::case_when(Color == "" ~ "#000000", .default = .data$Color)) %>%
     dplyr::mutate(Shape = dplyr::case_when(Shape == "" ~ "circle", .default = .data$Shape)) %>%
     dplyr::mutate(Shape = pointshape(.data$Shape)) %>%
     dplyr::mutate(Stroke = dplyr::case_when(Stroke == "" ~ Color, .default = .data$Stroke))
-
-  if (!is.null(prefix)) {
-    if (prefix == "Group") {
-      print(ne_df)
-    }
-  }
-
-  ne_df
 }
 
 

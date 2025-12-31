@@ -54,6 +54,13 @@ plot_circular_edited <- function(circular_base,
   #print(group_nodes_hot, n = 10000)
 
   # put this in a separate function/reactive to speed up plotting?
+
+  combined_nodes_and_edges <- combined_nodes_and_edges %>%
+    dplyr::mutate(Name = dplyr::case_when(.data$id == "Group" ~ stringr::str_replace_all(.data$Name, "^Group_", "Group "),
+                                          .data$id == "Family" ~ stringr::str_replace_all(.data$Name, "^Family_", "Family "),
+                                          .data$id == "Subfamily" ~ stringr::str_replace_all(.data$Name, "^Subfamily_", "Subfamily "),
+                                          .default = .data$Name))
+
   circular_base <- circular_base %>%
     dplyr::full_join(combined_nodes_and_edges, by = dplyr::join_by("label" == "Name")) %>%
     dplyr::left_join(dplyr::select(selected_kinome, "Manning_Name", "Uniprot_Gene_Name", "Uniprot_Entry", "Kinase_Name", "Uniprot_Accession"), by = dplyr::join_by("label" == "Manning_Name"), multiple = "first")

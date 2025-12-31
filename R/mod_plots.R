@@ -312,9 +312,9 @@ mod_plots_server <- function(id, kinome_data){
     })
 
     reactive_combined_nodes_and_edges <- shiny::reactive({
-      print(rhandsontable::hot_to_r(input$group_nodes_hot))
-      print("")
-      print("")
+      #print(rhandsontable::hot_to_r(input$group_nodes_hot))
+      #print("")
+      #print("")
       r_tbl <- combine_nodes_and_edges(kinase_edges_hot = input$kinase_edges_hot,
                               group_nodes_hot = input$group_nodes_hot,
                               family_nodes_hot = input$family_nodes_hot,
