@@ -213,9 +213,9 @@ mod_plots_server <- function(id, kinome_data){
       pos_nudge <- tibble::as_tibble(pos_nudge) %>%
         dplyr::mutate(label = reactive_kinase_groups())
 
-      print(pos_nudge)
+      #print(pos_nudge)
 
-      print(input)
+      #print(input)
 
       p
     })
@@ -312,11 +312,17 @@ mod_plots_server <- function(id, kinome_data){
     })
 
     reactive_combined_nodes_and_edges <- shiny::reactive({
-      combine_nodes_and_edges(kinase_edges_hot = input$kinase_edges_hot,
+      print(rhandsontable::hot_to_r(input$group_nodes_hot))
+      print("")
+      print("")
+      r_tbl <- combine_nodes_and_edges(kinase_edges_hot = input$kinase_edges_hot,
                               group_nodes_hot = input$group_nodes_hot,
                               family_nodes_hot = input$family_nodes_hot,
                               subfamily_nodes_hot = input$subfamily_nodes_hot,
                               kinome_df = reactive_kinome_df())
+
+      #print(r_tbl, n = 1000)
+      r_tbl
     })
     # start code for the manual editing of nodes and edges
 

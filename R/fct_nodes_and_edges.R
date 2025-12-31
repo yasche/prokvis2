@@ -64,9 +64,9 @@ ne_df_to_rhot_helper <- function(ne_df, ne_names) {
 
 combine_nodes_and_edges <- function(kinase_edges_hot, group_nodes_hot, family_nodes_hot, subfamily_nodes_hot, kinome_df) {
   kinases <- ne_rhot_to_df_helper(kinase_edges_hot, "Manning_Name", kinome_df, NULL)
-  kgroups <- ne_rhot_to_df_helper(kinase_edges_hot, "Kinase_Group", kinome_df, "Group")
-  kfams <- ne_rhot_to_df_helper(kinase_edges_hot, "Kinase_Family", kinome_df, "Family")
-  ksubfams <- ne_rhot_to_df_helper(kinase_edges_hot, "Kinase_Subfamily", kinome_df, "Subfamily")
+  kgroups <- ne_rhot_to_df_helper(group_nodes_hot, "Kinase_Group", kinome_df, "Group")
+  kfams <- ne_rhot_to_df_helper(family_nodes_hot, "Kinase_Family", kinome_df, "Family")
+  ksubfams <- ne_rhot_to_df_helper(subfamily_nodes_hot, "Kinase_Subfamily", kinome_df, "Subfamily")
 
   rbind(kinases, kgroups, kfams, ksubfams)
 }
@@ -80,9 +80,11 @@ ne_rhot_to_df_helper <- function(ne_rhot, which_ne, kinome_df, prefix) {
                                                             Stroke_Width = numeric(),
                                                             Clabel =  character())
 
+
   ne_names <- kinome_df %>%
     dplyr::select({{ which_ne }}) %>%
     dplyr::distinct()
+
 
   ne_df <- dplyr::left_join(ne_names, ne_df, by = dplyr::join_by({{ which_ne }} == "Name"), multiple = "first")
 
@@ -92,7 +94,7 @@ ne_rhot_to_df_helper <- function(ne_rhot, which_ne, kinome_df, prefix) {
     ne_df_names <- paste(prefix, ne_df[[which_ne]], sep = "_")
   }
 
-  ne_df %>%
+  ne_df <- ne_df %>%
     dplyr::transmute(Name = .env$ne_df_names,
                      Size = .data$Size,
                      Shape = .data$Shape,
@@ -105,6 +107,14 @@ ne_rhot_to_df_helper <- function(ne_rhot, which_ne, kinome_df, prefix) {
     dplyr::mutate(Shape = dplyr::case_when(Shape == "" ~ "circle", .default = .data$Shape)) %>%
     dplyr::mutate(Shape = pointshape(.data$Shape)) %>%
     dplyr::mutate(Stroke = dplyr::case_when(Stroke == "" ~ Color, .default = .data$Stroke))
+
+  if (!is.null(prefix)) {
+    if (prefix == "Group") {
+      print(ne_df)
+    }
+  }
+
+  ne_df
 }
 
 

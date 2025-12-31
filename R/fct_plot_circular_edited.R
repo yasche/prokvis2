@@ -47,8 +47,11 @@ plot_circular_edited <- function(circular_base,
                                  legend_title_size,
                                  hide_legend,
                                  highlight_groups,
-                                 group_highlighter_alpha) {
+                                 group_highlighter_alpha
+                                 ) {
 
+
+  #print(group_nodes_hot, n = 10000)
 
   # put this in a separate function/reactive to speed up plotting?
   circular_base <- circular_base %>%
