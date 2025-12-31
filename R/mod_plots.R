@@ -113,7 +113,7 @@ mod_plots_ui <- function(id, plot_tab, kinome_data) {
                 )
               }
             ),
-            open = TRUE
+            open = FALSE
           )
         }
       ),

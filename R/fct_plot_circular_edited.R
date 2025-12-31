@@ -55,6 +55,9 @@ plot_circular_edited <- function(circular_base,
 
   # put this in a separate function/reactive to speed up plotting?
 
+  group_label_size <- group_label_size %||% 5
+  group_label_radius <- group_label_radius %||% 1
+
   combined_nodes_and_edges <- combined_nodes_and_edges %>%
     dplyr::mutate(Name = dplyr::case_when(.data$id == "Group" ~ stringr::str_replace_all(.data$Name, "^Group_", "Group "),
                                           .data$id == "Family" ~ stringr::str_replace_all(.data$Name, "^Family_", "Family "),
