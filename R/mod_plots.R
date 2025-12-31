@@ -22,6 +22,9 @@ mod_plots_ui <- function(id, plot_tab, kinome_data) {
               shiny::uiOutput(ns("ui_custom_color_pal")),
               shiny::checkboxInput(ns("color_branches_groups"), "Color branches based on Groups", value = TRUE),
               shiny::uiOutput(ns("ui_default_branch_color")),
+              if (plot_tab == "circular" | plot_tab == "network") {
+                shiny::uiOutput(ns("ui_plot_alpha"))
+              },
               shiny::numericInput(ns("branch_thickness"), "Branch thickness", min = 0, value = 0.15, step = 0.05),
               shiny::checkboxInput(ns("hide_legend"), "Hide legend", value = FALSE),
               shiny::numericInput(ns("plot_height"), "Plot height in pixels", value = 1000),
@@ -110,7 +113,7 @@ mod_plots_ui <- function(id, plot_tab, kinome_data) {
                 )
               }
             ),
-            open = FALSE
+            open = TRUE
           )
         }
       ),
@@ -157,15 +160,49 @@ mod_plots_server <- function(id, kinome_data){
       plot_circular_base(reactive_kinome_df())
     })
 
+    reactive_mrcas <- shiny::reactive({
+      get_mrcas(reactive_kinome_df(), reactive_plot_circular_base())
+    })
+
+    reactive_custom_color_pal <- shiny::reactive({
+      custom_color_nums_to_pal(reactive_custom_color_nums(), input = input)
+    })
+
     reactive_plot_circular_mod <- shiny::reactive({
-      p <- ggtree::ggtree(reactive_plot_circular_base())
+      p <- plot_circular_edited(
+        circular_base = reactive_plot_circular_base(),
+        combined_nodes_and_edges = reactive_combined_nodes_and_edges(),
+        selected_kinome = reactive_kinome_df(),
+        color_branches_groups = input$color_branches_groups,
+        branch_thickness = input$branch_thickness,
+        default_branch_color = input$default_branch_color,
+        color_kinase_edges_groups = input$color_kinase_edges_groups,
+        show_kinases_labels = input$show_kinases_labels,
+        kinase_labels_manual_selection = input$kinase_labels_manual_selection,
+        kinase_edges_hot = input$kinase_edges_hot,
+        show_which_kinase_labels = input$show_which_kinase_labels,
+        color_kinase_labels_groups = input$color_kinase_labels_groups,
+        label_size = input$label_size,
+        default_label_color = input$default_label_color,
+        mrcas = reactive_mrcas(),
+        color_palette = input$color_palette,
+        custom_color_pal = reactive_custom_color_pal(),
+        group_label_radius = input$group_label_radius,
+        show_group_labels = input$show_group_labels,
+        group_label_size = input$group_label_size,
+        legend_label_size = input$legend_label_size,
+        legend_title_size = input$legend_title_size,
+        hide_legend = input$hide_legend,
+        highlight_groups = input$highlight_groups,
+        group_highlighter_alpha = input$group_highlighter_alpha
+      )
 
-      # access custom color palette
-      cols <- purrr::map_chr(reactive_custom_color_nums(), ~ input[[.x]] %||% "")
-      # convert empty inputs to transparent
-      cols[cols == ""] <- NA
+      ## access custom color palette
+      #cols <- purrr::map_chr(reactive_custom_color_nums(), ~ input[[.x]] %||% "")
+      ## convert empty inputs to transparent
+      #cols[cols == ""] <- NA
 
-      print(cols)
+      #print(cols)
 
       # access custom x/y nudge for group labels in network plot
       pos_nudge <- purrr::map_dbl(reactive_custom_xy(), ~ input[[.x]] %||% 0)
@@ -182,6 +219,8 @@ mod_plots_server <- function(id, kinome_data){
 
       p
     })
+
+
 
     output$plot_circular <- shiny::renderPlot({
       reactive_plot_circular_mod()
@@ -244,7 +283,7 @@ mod_plots_server <- function(id, kinome_data){
 
     shiny::observeEvent(input$edit_groups_action_button, {
       shiny::showModal(shiny::modalDialog(
-        title = "Edit kinase edges",
+        title = "Edit group nodes",
         rhandsontable::rHandsontableOutput(ns("group_nodes_hot")),
         size = "xl",
         easyClose = TRUE,
@@ -254,7 +293,7 @@ mod_plots_server <- function(id, kinome_data){
 
     shiny::observeEvent(input$edit_families_action_button, {
       shiny::showModal(shiny::modalDialog(
-        title = "Edit kinase edges",
+        title = "Edit family nodes",
         rhandsontable::rHandsontableOutput(ns("family_nodes_hot")),
         size = "xl",
         easyClose = TRUE,
@@ -264,12 +303,20 @@ mod_plots_server <- function(id, kinome_data){
 
     shiny::observeEvent(input$edit_subfamilies_action_button, {
       shiny::showModal(shiny::modalDialog(
-        title = "Edit kinase edges",
+        title = "Edit subfamily nodes",
         rhandsontable::rHandsontableOutput(ns("subfamily_nodes_hot")),
         size = "xl",
         easyClose = TRUE,
         fade = TRUE
       ))
+    })
+
+    reactive_combined_nodes_and_edges <- shiny::reactive({
+      combine_nodes_and_edges(kinase_edges_hot = input$kinase_edges_hot,
+                              group_nodes_hot = input$group_nodes_hot,
+                              family_nodes_hot = input$family_nodes_hot,
+                              subfamily_nodes_hot = input$subfamily_nodes_hot,
+                              kinome_df = reactive_kinome_df())
     })
     # start code for the manual editing of nodes and edges
 
@@ -375,6 +422,17 @@ mod_plots_server <- function(id, kinome_data){
         condition = "input.show_group_labels == true",
         shiny::checkboxInput(ns("adjust_np_pos_manually"), "Adjust the label position for each group manually", value = FALSE),
         ns = ns
+      )
+    })
+
+    output$ui_plot_alpha <- shiny::renderUI({
+      list(
+        shiny::checkboxInput(ns("highlight_groups"), 'Highlight Groups', value = FALSE),
+        shiny::conditionalPanel(
+          condition = "input.highlight_groups == true",
+          shiny::sliderInput(ns("group_highlighter_alpha"), "Alpha", min = 0, max = 1, value = 0.1, step = 0.01),
+          ns = ns
+        )
       )
     })
 

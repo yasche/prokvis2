@@ -38,7 +38,6 @@ plot_circular_edited <- function(circular_base,
                                  label_size,
                                  default_label_color,
                                  mrcas,
-                                 color_branches_groups,
                                  color_palette,
                                  custom_color_pal,
                                  group_label_radius,
@@ -46,7 +45,9 @@ plot_circular_edited <- function(circular_base,
                                  group_label_size,
                                  legend_label_size,
                                  legend_title_size,
-                                 hide_legend) {
+                                 hide_legend,
+                                 highlight_groups,
+                                 group_highlighter_alpha) {
 
 
   # put this in a separate function/reactive to speed up plotting?
@@ -58,14 +59,14 @@ plot_circular_edited <- function(circular_base,
     p <- ggtree::ggtree(
       circular_base,
       layout = "fan",
-      size = .env$branch_thickness
+      size = branch_thickness
     )
   } else {
     p <- ggtree::ggtree(
       circular_base,
       layout = "fan",
-      size = .env$branch_thickness,
-      color = .env$default_branch_color
+      size = branch_thickness,
+      color = default_branch_color
     )
   }
 
@@ -172,15 +173,21 @@ plot_circular_edited <- function(circular_base,
   }
 
   #check if kinase labels should be colored based on group.
-  if (color_kinase_labels_groups == T) {
-    p <- p + ggtree::geom_tiplab(ggtree::aes(color = .data$Kinase_Group), size = .env$label_size)#, family = input$chosenFont) # Font needs to be redone
+  if (color_kinase_labels_groups == TRUE) {
+    p <- p + ggtree::geom_tiplab(ggtree::aes(color = .data$Kinase_Group), size = label_size)#, family = input$chosenFont) # Font needs to be redone
   } else {
-    p <- p + ggtree::geom_tiplab(size = .env$label_size, color = .env$default_label_color)#, family = input$chosenFont)
+    p <- p + ggtree::geom_tiplab(size = label_size, color = default_label_color)#, family = input$chosenFont)
   }
 
   #check if branches should be highlighted based on group.
-  if (input$highlightGroups == T) {
-    p <- p + geom_highlight(data = mrcas, aes(node = node, fill = glabel2), alpha = input$groupHighlighterAlpha)
+  if (!is.null(highlight_groups)) {
+    if (highlight_groups == TRUE) {
+      # .data pronoun somehow does not work inside ggtree::geom_highlight
+      # therefore this hack is used
+      node <- NULL
+      glabel2 <- NULL
+      p <- p + ggtree::geom_highlight(data = mrcas, ggplot2::aes(node = node, fill = glabel2), alpha = group_highlighter_alpha)
+    }
   }
 
   #add interactivity if chosen
@@ -208,12 +215,12 @@ plot_circular_edited <- function(circular_base,
   #change color palette
   if (color_palette != "Default ggplot2") {
     if (color_palette == "Custom") {
-      p <- p + ggtree::scale_fill_manual(values = .env$custom_color_pal, aesthetics = c("colour", "fill"), na.translate = F)
+      p <- p + ggtree::scale_fill_manual(values = custom_color_pal, aesthetics = c("colour", "fill"), na.translate = F)
     } else {
-      p <- p + scico::scale_color_scico_d(palette = .env$color_palette, aesthetics = c("colour", "fill"), na.translate = F)
+      p <- p + scico::scale_color_scico_d(palette = color_palette, aesthetics = c("colour", "fill"), na.translate = F)
     }
   } else {
-    p <- p + ggtree::scale_color_discrete(aesthetics = c("colour", "fill"), na.translate = F)
+    p <- p + ggplot2::scale_color_discrete(aesthetics = c("colour", "fill"), na.translate = F)
   }
 
   group_labels <- p$data %>%
@@ -223,7 +230,7 @@ plot_circular_edited <- function(circular_base,
     dplyr::mutate(label = stringr::str_remove_all(.data$label2, "^Group "))
 
   if (show_group_labels == TRUE) {
-    p <- p + ggtree::geom_text(data = group_labels, ggtree::aes(x = .data$x, y = .data$y, color = .data$label, label = .data$label), size = .env$group_label_size)#, family = input$chosenFont) #Add font later
+    p <- p + ggtree::geom_text(data = group_labels, ggtree::aes(x = .data$x, y = .data$y, color = .data$label, label = .data$label), size = group_label_size)#, family = input$chosenFont) #Add font later
   }
   p <- p + ggplot2::labs(colour = "Kinase Group")+
     ggplot2::labs(fill = "Kinase Group")
@@ -301,7 +308,7 @@ get_mrcas <- function(kinome_df, circular_base){
 
     curr_mrca <- paste("Family ", curr_mrca, sep = "")
 
-    curr_node <- ggtree::MRCA(circular_mod, curr_mrca)
+    curr_node <- ggtree::MRCA(circular_base, curr_mrca)
     node[[i]] <- curr_node
   }
   tibble::tibble(node = node, glabel2 = kgroups)
@@ -317,8 +324,10 @@ get_mrcas <- function(kinome_df, circular_base){
 #' @return The return value, if any, from executing the function.
 #'
 #' @noRd
-custom_color_nums_to_pal <- function(custom_color_nums) {
+custom_color_nums_to_pal <- function(custom_color_nums, input) {
   cols <- purrr::map_chr(custom_color_nums, ~ input[[.x]] %||% "")
   # convert empty inputs to transparent
   cols[cols == ""] <- NA
+
+  cols
 }
