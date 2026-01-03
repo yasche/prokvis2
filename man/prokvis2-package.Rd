@@ -17,7 +17,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Yannik Schermer \email{mail@yannik.science} [copyright holder]
+\strong{Maintainer}: Yannik Schermer \email{r-packages@yannik.science} [copyright holder]
 
 }
 \keyword{internal}
