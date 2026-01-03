@@ -6,7 +6,7 @@
 \alias{prokvis2-package}
 \title{prokvis2: Intuitive Visualizations of Kinome Data}
 \description{
-A feature-rich 'Shiny' application to create intuitive visualizations of kinome data, similar to KinMap (Eid et al. (2017) \doi{10.1186/s12859-016-1433-7}) and CORAL (Metz et al. (2018) \doi{10.1016/j.cels.2018.07.001}). Whereas other solutions only permit the visualization human kinome data, 'prokvis2' also enables the visualization of kinome data from other model organisms. Kinase data was derived from several publications (Caenepeel et al. (2004) \doi{10.1073/pnas.0306880101}, Manning et al. (2002) \doi{10.1126/science.1075762}).
+A feature-rich 'Shiny' application to create intuitive visualizations of kinome data, similar to KinMap (Eid et al. (2017) \doi{10.1186/s12859-016-1433-7}) and CORAL (Metz et al. (2018) \doi{10.1016/j.cels.2018.07.001}). Whereas other solutions only permit the visualization human kinome data, 'prokvis2' also enables the visualization of kinome data from other model organisms, including mouse, yeast and fruit fly. Kinase data was derived from several publications (Caenepeel et al. (2004) \doi{10.1073/pnas.0306880101}, Manning et al. (2002) \doi{10.1126/science.1075762}).
 }
 \seealso{
 Useful links:
