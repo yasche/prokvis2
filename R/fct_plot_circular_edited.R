@@ -195,11 +195,12 @@ plot_circular_edited <- function(circular_base,
   #check if branches should be highlighted based on group.
   if (!is.null(highlight_groups)) {
     if (highlight_groups == TRUE) {
-      # .data pronoun somehow does not work inside ggtree::geom_highlight
-      # therefore this hack is used
-      node <- NULL
-      glabel2 <- NULL
-      p <- p + ggtree::geom_highlight(data = mrcas, ggplot2::aes(node = node, fill = glabel2), alpha = group_highlighter_alpha)
+      # This produces message
+      # ! # Invaild edge matrix for <phylo>. A <tbl_df> is returned.
+      # wrap in purrr::quietly
+      # p <- p + ggtree::geom_highlight(data = mrcas, ggplot2::aes(node = node, fill = glabel2), alpha = group_highlighter_alpha)
+
+      p <- quiet_helper_highlight_circular(p = p, mrcas = mrcas, group_highlighter_alpha = group_highlighter_alpha)
     }
   }
 
@@ -348,4 +349,31 @@ custom_color_nums_to_pal <- function(custom_color_nums, input) {
   cols[cols == ""] <- NA
 
   cols
+}
+
+
+helper_highlight_circular <- function(p, mrcas, group_highlighter_alpha) {
+  # .data pronoun somehow does not work inside ggtree::geom_highlight
+  # therefore this hack is used
+  node <- NULL
+  glabel2 <- NULL
+  p + ggtree::geom_highlight(data = mrcas, ggplot2::aes(node = node, fill = glabel2), alpha = group_highlighter_alpha)
+}
+
+quiet_helper_highlight_circular <- function(...) {
+  res <- purrr::quietly(helper_highlight_circular)(...)
+
+  # message
+  # ! # Invaild edge matrix for <phylo>. A <tbl_df> is returned.
+  # is of no value and is therefore silenced
+  # warnings are retained
+  if (rlang::is_empty(res$warnings) == FALSE) {
+    rlang::warn(res$warnings)
+  }
+
+  # if (rlang::is_empty(res$messages) == FALSE) {
+    # rlang::inform(res$messages)
+  # }
+
+  res$result
 }
