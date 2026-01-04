@@ -17,7 +17,7 @@ app_ui <- function(request) {
     # Your application UI logic
     bslib::page_navbar(
       theme = bslib::bs_theme(version = 5, bootswatch = "pulse"),
-      title = shiny::HTML(paste0("<img src = 'www/favicon.png' height = 70>")),
+      title = shiny::HTML("<img src = 'www/favicon.png' height = 70>"),
       #title = "prokvis2",
       window_title = "prokvis2",
       bslib::nav_panel("Plots",
@@ -33,7 +33,7 @@ app_ui <- function(request) {
       bslib::nav_panel("About"),
       bslib::nav_spacer(),
       bslib::nav_item(shiny::tags$a(shiny::icon("github"), "GitHub", href = "https://github.com/yasche", target = "_blank")),
-      bslib::nav_item(shiny::tags$a(shiny::icon("envelope"), "Contact", href = "mailto:mail@yannik.science", target = "_blank"))
+      bslib::nav_item(shiny::tags$a(shiny::icon("envelope"), "Contact", href = "mailto:r-packages@yannik.science", target = "_blank"))
     )
   )
 }
