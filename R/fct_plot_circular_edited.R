@@ -251,8 +251,18 @@ plot_circular_edited <- function(circular_base,
   }
 
 
-  p <- p + ggplot2::labs(colour = "Kinase Group")+
-    ggplot2::labs(fill = "Kinase Group")
+
+  p <- p + ggplot2::labs(colour = "Kinase Group")
+
+  if (!is.null(highlight_groups)) {
+    if (highlight_groups == TRUE) {
+
+      # prevent message
+      # Ignoring unknown labels:
+      # fill : "Kinase Group"
+      p <- p + ggplot2::labs(fill = "Kinase Group")
+    }
+  }
 
   #interactive mode can't handle other fonts in legend for some reason...
   #if (input$staticInteractive == "static") {
