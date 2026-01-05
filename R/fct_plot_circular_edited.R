@@ -123,6 +123,8 @@ plot_circular_edited <- function(circular_base,
                                              .default = NA))
   }
 
+  print("before/after")
+
   #manipulate label here
   if (show_which_kinase_labels == "Uniprot gene name") {
 
@@ -239,10 +241,12 @@ plot_circular_edited <- function(circular_base,
 
   if (!is.null(group_label_radius)) {
     group_labels <- p$data %>%
-      dplyr::select("label2", "x", "y", "angle") %>%
+      dplyr::select("label2", "x", "y", "angle", "id") %>%
       dplyr::mutate(x = .data$x * 4.5 * .env$group_label_radius) %>%
-      dplyr::filter(grepl("^Group [A-Za-z0-9]{1,}$", .data$label2)) %>%
-      dplyr::mutate(label = stringr::str_remove_all(.data$label2, "^Group "))
+      #dplyr::filter(grepl("^Group [A-Za-z0-9]{1,}$", .data$label2)) %>%
+      dplyr::filter(.data$id == "Group") %>%
+      dplyr::mutate(label = stringr::str_remove_all(.data$label2, "^Group ")) %>%
+      dplyr::select(-"id")
 
 
     if (show_group_labels == TRUE) {
@@ -252,6 +256,7 @@ plot_circular_edited <- function(circular_base,
 
 
 
+  # lines are necessary to have only 1 legend
   p <- p + ggplot2::labs(colour = "Kinase Group")
 
   if (!is.null(highlight_groups)) {
