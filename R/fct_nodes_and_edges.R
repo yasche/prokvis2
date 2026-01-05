@@ -68,7 +68,20 @@ combine_nodes_and_edges <- function(kinase_edges_hot, group_nodes_hot, family_no
   kfams <- ne_rhot_to_df_helper(family_nodes_hot, "Kinase_Family", kinome_df, "Family")
   ksubfams <- ne_rhot_to_df_helper(subfamily_nodes_hot, "Kinase_Subfamily", kinome_df, "Subfamily")
 
-  rbind(kinases, kgroups, kfams, ksubfams)
+  # add an origin for safer filtering in plot functions
+  origin <- tibble::tibble(
+    Name = "Origin",
+    Size = NA,
+    Shape = NA,
+    Color = NA,
+    Stroke = NA,
+    Stroke_Width = NA,
+    Clabel = NA,
+    id = "Origin"
+  )
+
+
+  rbind(kinases, kgroups, kfams, ksubfams, origin)
 }
 
 ne_rhot_to_df_helper <- function(ne_rhot, which_ne, kinome_df, prefix) {

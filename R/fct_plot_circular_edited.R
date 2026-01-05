@@ -123,7 +123,6 @@ plot_circular_edited <- function(circular_base,
                                              .default = NA))
   }
 
-  print("before/after")
 
   #manipulate label here
   if (show_which_kinase_labels == "Uniprot gene name") {
@@ -132,8 +131,11 @@ plot_circular_edited <- function(circular_base,
       dplyr::mutate(Uniprot_Gene_Name = dplyr::case_when(is.na(.data$label) ~ NA,
                                                          .default = .data$Uniprot_Gene_Name)) %>%
       dplyr::mutate(chosen_label = .data$Uniprot_Gene_Name) %>%
-      dplyr::mutate(chosen_label = dplyr::case_when(grepl("Origin|Group|Family|Subfamily", .data$label) ~ .data$label,
-                                                   .default = .data$chosen_label)) %>%
+      # safer way to mutate via id column
+      #dplyr::mutate(chosen_label = dplyr::case_when(grepl("Origin|Group|Family|Subfamily", .data$label) ~ .data$label,
+      #                                             .default = .data$chosen_label)) %>%
+      dplyr::mutate(chosen_label = dplyr::case_when(.data$id == "Group" | .data$id == "Family" | .data$id == "Subfamily" | .data$id == "Origin" ~ .data$label,
+                                                    .default = .data$chosen_label)) %>%
       dplyr::mutate(label = .data$chosen_label) %>%
       dplyr::select(-"chosen_label")
 
@@ -144,7 +146,9 @@ plot_circular_edited <- function(circular_base,
                                                      .default = .data$Uniprot_Entry)) %>%
       dplyr::mutate(chosen_label = .data$Uniprot_Entry) %>%
       #preserve group, family, subfamily
-      dplyr::mutate(chosen_label = dplyr::case_when(grepl("Origin|Group|Family|Subfamily", .data$label) ~ .data$label,
+      #dplyr::mutate(chosen_label = dplyr::case_when(grepl("Origin|Group|Family|Subfamily", .data$label) ~ .data$label,
+      #                                              .default = .data$chosen_label)) %>%
+      dplyr::mutate(chosen_label = dplyr::case_when(.data$id == "Group" | .data$id == "Family" | .data$id == "Subfamily" | .data$id == "Origin" ~ .data$label,
                                                     .default = .data$chosen_label)) %>%
       dplyr::mutate(label = .data$chosen_label) %>%
       dplyr::select(-"chosen_label")
@@ -156,7 +160,9 @@ plot_circular_edited <- function(circular_base,
                                                    .default = .data$Kinase_Name)) %>%
       dplyr::mutate(chosen_label = .data$Kinase_Name) %>%
       #preserve group, family, subfamily
-      dplyr::mutate(chosen_label = dplyr::case_when(grepl("Origin|Group|Family|Subfamily", .data$label) ~ .data$label,
+      #dplyr::mutate(chosen_label = dplyr::case_when(grepl("Origin|Group|Family|Subfamily", .data$label) ~ .data$label,
+      #                                              .default = .data$chosen_label)) %>%
+      dplyr::mutate(chosen_label = dplyr::case_when(.data$id == "Group" | .data$id == "Family" | .data$id == "Subfamily" | .data$id == "Origin" ~ .data$label,
                                                     .default = .data$chosen_label)) %>%
       dplyr::mutate(label = .data$chosen_label) %>%
       dplyr::select(-"chosen_label")
@@ -168,7 +174,9 @@ plot_circular_edited <- function(circular_base,
                                                          .default = .data$Uniprot_Accession)) %>%
       dplyr::mutate(chosen_label = .data$Uniprot_Accession) %>%
       #preserve group, family, subfamily
-      dplyr::mutate(chosen_label = dplyr::case_when(grepl("Origin|Group|Family|Subfamily", .data$label) ~ .data$label,
+      #dplyr::mutate(chosen_label = dplyr::case_when(grepl("Origin|Group|Family|Subfamily", .data$label) ~ .data$label,
+      #                                              .default = .data$chosen_label)) %>%
+      dplyr::mutate(chosen_label = dplyr::case_when(.data$id == "Group" | .data$id == "Family" | .data$id == "Subfamily" | .data$id == "Origin" ~ .data$label,
                                                     .default = .data$chosen_label)) %>%
       dplyr::mutate(label = .data$chosen_label) %>%
       dplyr::select(-"chosen_label")
@@ -180,7 +188,9 @@ plot_circular_edited <- function(circular_base,
                                               .default = .data$Clabel)) %>%
       dplyr::mutate(chosen_label = .data$Clabel) %>%
       #preserve group, family, subfamily
-      dplyr::mutate(chosen_label = dplyr::case_when(grepl("Origin|Group|Family|Subfamily", .data$label) ~ .data$label,
+      #dplyr::mutate(chosen_label = dplyr::case_when(grepl("Origin|Group|Family|Subfamily", .data$label) ~ .data$label,
+      #                                              .default = .data$chosen_label)) %>%
+      dplyr::mutate(chosen_label = dplyr::case_when(.data$id == "Group" | .data$id == "Family" | .data$id == "Subfamily" | .data$id == "Origin" ~ .data$label,
                                                     .default = .data$chosen_label)) %>%
       dplyr::mutate(label = .data$chosen_label) %>%
       dplyr::select(-"chosen_label")
