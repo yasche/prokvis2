@@ -124,7 +124,7 @@ mod_plots_ui <- function(id, plot_tab, kinome_data) {
         shiny::plotOutput(ns("plot_circular"))
       },
       if (plot_tab == "network") {
-        "the plot is network"
+        shiny::plotOutput(ns("plot_network"))
       },
       if (plot_tab == "table") {
         DT::dataTableOutput(ns("kinome_table"))
@@ -226,6 +226,14 @@ mod_plots_server <- function(id, kinome_data){
       reactive_plot_circular_mod()
     })
     # end code for the circular plot
+
+    # start code for the network plot
+    output$plot_network <- shiny::renderPlot({
+      # POC code for network plot
+      ggplot2::ggplot(plot_network_base(reactive_kinome_df(), set_seed = 1), aes(x = x, y = y, xend = xend, yend = yend)) +
+        ggnetwork::geom_edges()
+    })
+    # end code for the network plot
 
     # start code for the manual editing of nodes and edges
     reactive_kinase_edges_rhot <- shiny::reactive({
