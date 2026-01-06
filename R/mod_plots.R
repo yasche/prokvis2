@@ -38,6 +38,9 @@ mod_plots_ui <- function(id, plot_tab, kinome_data) {
                   shiny::checkboxInput(ns("adjust_legend_pos_man"), "Adjust legend position manually", value = FALSE),
                   shiny::uiOutput(ns("ui_adjust_legend_pos"))
                 )
+              },
+              if (plot_tab == "network") {
+                shiny::numericInput(ns("set_seed"), "Plot layout", value = 1, min = 1)
               }
             ),
             bslib::accordion_panel(
@@ -220,7 +223,7 @@ mod_plots_server <- function(id, kinome_data){
     # start code for the network plot
     output$plot_network <- shiny::renderPlot({
       # POC code for network plot
-      ggplot2::ggplot(plot_network_base(reactive_kinome_df(), set_seed = 1), aes(x = x, y = y, xend = xend, yend = yend)) +
+      ggplot2::ggplot(plot_network_base(reactive_kinome_df(), set_seed = input$set_seed), aes(x = x, y = y, xend = xend, yend = yend)) +
         ggnetwork::geom_edges()
     })
     # end code for the network plot
