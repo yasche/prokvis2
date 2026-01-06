@@ -17,7 +17,7 @@ Imports:
     DT,
     ggnetwork,
     ggplot2,
-    ggtree,
+    ggtree (>= 3.16),
     golem,
     igraph,
     intergraph,
