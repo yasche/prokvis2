@@ -11,7 +11,8 @@ plot_network_base <- function(kinome_df, set_seed) {
     dplyr::distinct()
 
 
-  seed <- ifelse(is.na(set_seed) | rlang::is_null(set_seed), 1, set_seed)
+  # rlang::is_na can handle NULL
+  seed <- ifelse(rlang::is_na(set_seed) | rlang::is_null(set_seed), 1, set_seed)
 
   network_base <- withr::with_seed(seed, plot_network_base_helper(reduced_kinome))
 
