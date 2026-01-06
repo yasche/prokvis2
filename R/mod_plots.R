@@ -120,7 +120,6 @@ mod_plots_ui <- function(id, plot_tab, kinome_data) {
 
       # the page content goes here
       if (plot_tab == "circular") {
-        #"the plot is circular",
         shiny::plotOutput(ns("plot_circular"))
       },
       if (plot_tab == "network") {
@@ -131,15 +130,6 @@ mod_plots_ui <- function(id, plot_tab, kinome_data) {
       }
 
     )
-
-    #if (plot_tab == "circular") {
-    #  bslib::layout_sidebar(sidebar = bslib::sidebar("sb_circular"),
-    #                        "circular")
-    #} else if (plot_tab == "network") {
-    #  bslib::layout_sidebar(sidebar = bslib::sidebar("sb_network"),
-    #                        "network")
-    #}
-
   )
 }
 
