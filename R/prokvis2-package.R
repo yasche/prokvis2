@@ -2,7 +2,7 @@
 "_PACKAGE"
 
 ## usethis namespace: start
-#' @importFrom ggtree %<+%
+#' @importFrom ggfun %<+%
 #' @importFrom rlang .data
 #' @importFrom rlang .env
 ## usethis namespace: end
