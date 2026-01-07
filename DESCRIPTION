@@ -17,7 +17,6 @@ Imports:
     DT,
     ggnetwork,
     ggplot2,
-    ggtree (>= 3.16),
     golem,
     igraph,
     intergraph,
@@ -40,5 +39,6 @@ Depends:
 URL: https://github.com/yasche/prokvis2
 BugReports: https://github.com/yasche/prokvis2/issues
 Suggests: 
+    ggtree,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
