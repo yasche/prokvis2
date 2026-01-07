@@ -40,6 +40,6 @@ Depends:
 URL: https://github.com/yasche/prokvis2
 BugReports: https://github.com/yasche/prokvis2/issues
 Suggests: 
-    ggtree,
+    ggtree (>= 3.20),
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
