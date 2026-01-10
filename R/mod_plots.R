@@ -225,10 +225,7 @@ mod_plots_server <- function(id, kinome_data){
       plot_network_base(reactive_kinome_df(), set_seed = input$set_seed)
     })
 
-
-    output$plot_network <- shiny::renderPlot({
-      # POC code for network plot
-      #print(reactive_custom_xy_nudge())
+    reactive_plot_network_mod <- shiny::reactive({
       plot_network_edited(network_base = reactive_plot_network_base(),
                           combined_nodes_and_edges = reactive_combined_nodes_and_edges(),
                           selected_kinome = reactive_kinome_df(),
@@ -255,9 +252,10 @@ mod_plots_server <- function(id, kinome_data){
                           legend_label_size = input$legend_label_size,
                           legend_title_size = input$legend_title_size,
                           hide_legend = input$hide_legend)
-      #print(assign_branch_groups_network(reactive_kinome_df(), reactive_plot_network_base()))
-      # ggplot2::ggplot(plot_network_base(reactive_kinome_df(), set_seed = input$set_seed), aes(x = x, y = y, xend = xend, yend = yend)) +
-      #   ggnetwork::geom_edges()
+    })
+
+    output$plot_network <- shiny::renderPlot({
+      reactive_plot_network_mod()
     })
     # end code for the network plot
 
