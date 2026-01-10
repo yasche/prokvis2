@@ -39,3 +39,17 @@ kinase_groups_to_custom_xy <- function(kinase_groups) {
 
   as.vector(rbind(posx, posy))
 }
+
+
+custom_xy_nums_to_nudge <- function(custom_xy_nums, input, kinase_groups) {
+  xy <- purrr::map_dbl(custom_xy_nums, ~ input[[.x]] %||% 0)
+  length_xy <- length(xy)
+
+  xy <- matrix(xy, nrow = length_xy / 2, ncol = 2, byrow = TRUE)
+
+  colnames(xy) <- c("x_nudge", "y_nudge")
+
+  xy %>%
+    tibble::as_tibble() %>%
+    dplyr::mutate(label = .env$kinase_groups)
+}

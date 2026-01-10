@@ -221,10 +221,43 @@ mod_plots_server <- function(id, kinome_data){
     # end code for the circular plot
 
     # start code for the network plot
+    reactive_plot_network_base <- shiny::reactive({
+      plot_network_base(reactive_kinome_df(), set_seed = input$set_seed)
+    })
+
+
     output$plot_network <- shiny::renderPlot({
       # POC code for network plot
-      ggplot2::ggplot(plot_network_base(reactive_kinome_df(), set_seed = input$set_seed), aes(x = x, y = y, xend = xend, yend = yend)) +
-        ggnetwork::geom_edges()
+      #print(reactive_custom_xy_nudge())
+      plot_network_edited(network_base = reactive_plot_network_base(),
+                          combined_nodes_and_edges = reactive_combined_nodes_and_edges(),
+                          selected_kinome = reactive_kinome_df(),
+                          color_branches_groups = input$color_branches_groups,
+                          branch_thickness = input$branch_thickness,
+                          default_branch_color = input$default_branch_color,
+                          color_kinase_edges_groups = input$color_kinase_edges_groups,
+                          show_kinases_labels = input$show_kinases_labels,
+                          kinase_labels_manual_selection = input$kinase_labels_manual_selection,
+                          kinase_edges_hot = input$kinase_edges_hot,
+                          nudge_kinase_label_x = input$nudge_kinase_label_x,
+                          nudge_kinase_label_y = input$nudge_kinase_label_y,
+                          show_which_kinase_labels = input$show_which_kinase_labels,
+                          color_kinase_labels_groups = input$color_kinase_labels_groups,
+                          label_size = input$label_size,
+                          default_label_color = input$default_label_color,
+                          highlight_groups = input$highlight_groups,
+                          group_highlighter_alpha = input$group_highlighter_alpha,
+                          color_palette = input$color_palette,
+                          custom_color_pal = reactive_custom_color_pal(),
+                          custom_xy_nudge = reactive_custom_xy_nudge(),
+                          show_group_labels = input$show_group_labels,
+                          group_label_size = input$group_label_size,
+                          legend_label_size = input$legend_label_size,
+                          legend_title_size = input$legend_title_size,
+                          hide_legend = input$hide_legend)
+      #print(assign_branch_groups_network(reactive_kinome_df(), reactive_plot_network_base()))
+      # ggplot2::ggplot(plot_network_base(reactive_kinome_df(), set_seed = input$set_seed), aes(x = x, y = y, xend = xend, yend = yend)) +
+      #   ggnetwork::geom_edges()
     })
     # end code for the network plot
 
@@ -459,6 +492,10 @@ mod_plots_server <- function(id, kinome_data){
         ),
         ns = ns
       )
+    })
+
+    reactive_custom_xy_nudge <- shiny::reactive({
+      custom_xy_nums_to_nudge(reactive_custom_xy(), input, reactive_kinase_groups())
     })
     ## end code for custom group label position in network plot
     # end code for server-side UI elements
