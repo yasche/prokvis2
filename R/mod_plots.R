@@ -198,13 +198,13 @@ mod_plots_server <- function(id, kinome_data){
       #print(cols)
 
       # access custom x/y nudge for group labels in network plot
-      pos_nudge <- purrr::map_dbl(reactive_custom_xy(), ~ input[[.x]] %||% 0)
-      pos_nudge <- matrix(nrow = length(pos_nudge) / 2, ncol = 2, byrow = TRUE)
+      #pos_nudge <- purrr::map_dbl(reactive_custom_xy(), ~ input[[.x]] %||% 0)
+      #pos_nudge <- matrix(nrow = length(pos_nudge) / 2, ncol = 2, byrow = TRUE)
 
-      colnames(pos_nudge) <- c("x_nudge", "y_nudge")
+      #colnames(pos_nudge) <- c("x_nudge", "y_nudge")
 
-      pos_nudge <- tibble::as_tibble(pos_nudge) %>%
-        dplyr::mutate(label = reactive_kinase_groups())
+      #pos_nudge <- tibble::as_tibble(pos_nudge) %>%
+      #  dplyr::mutate(label = reactive_kinase_groups())
 
       #print(pos_nudge)
 
