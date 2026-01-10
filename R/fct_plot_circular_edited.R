@@ -205,7 +205,7 @@ plot_circular_edited <- function(circular_base,
   }
 
   #check if branches should be highlighted based on group.
-  if (!is.null(highlight_groups)) {
+  if (!rlang::is_null(highlight_groups)) {
     if (highlight_groups == TRUE) {
       # This produces message
       # ! # Invaild edge matrix for <phylo>. A <tbl_df> is returned.
