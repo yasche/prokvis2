@@ -36,6 +36,8 @@ plot_network_edited <- function(network_base,
   # print(network_base)
   # return(NULL)
 
+  group_label_size <- group_label_size %||% 5
+
   combined_nodes_and_edges <- combined_nodes_and_edges %>%
     dplyr::mutate(Name = dplyr::case_when(.data$id == "Group" ~ stringr::str_replace_all(.data$Name, "^Group_", "Group "),
                                           .data$id == "Family" ~ stringr::str_replace_all(.data$Name, "^Family_", "Family "),
@@ -234,8 +236,19 @@ plot_network_edited <- function(network_base,
   }
 
 
-  p <- p + ggplot2::labs(colour = "Kinase Group") +
-    ggplot2::labs(fill = "Kinase Group")
+
+  # lines are necessary to have only 1 legend
+  p <- p + ggplot2::labs(colour = "Kinase Group")
+
+  if (!is.null(highlight_groups)) {
+    if (highlight_groups == TRUE) {
+
+      # prevent message
+      # Ignoring unknown labels:
+      # fill : "Kinase Group"
+      p <- p + ggplot2::labs(fill = "Kinase Group")
+    }
+  }
   #interactive mode can't handle other fonts in legend for some reason...
   #if (input$staticInteractive == "static") {
   p <- p + ggplot2::theme(legend.text = ggplot2::element_text(size = legend_label_size),# family = input$chosenFont),
