@@ -217,7 +217,7 @@ mod_plots_server <- function(id, kinome_data){
 
     output$plot_circular <- shiny::renderPlot({
       reactive_plot_circular_mod()
-    })
+    }, width = function() input$plot_width, height = function() input$plot_height, execOnResize = TRUE)
     # end code for the circular plot
 
     # start code for the network plot
@@ -256,7 +256,7 @@ mod_plots_server <- function(id, kinome_data){
 
     output$plot_network <- shiny::renderPlot({
       reactive_plot_network_mod()
-    })
+    }, width = function() input$plot_width, height = function() input$plot_height, execOnResize = TRUE)
     # end code for the network plot
 
     # start code for the manual editing of nodes and edges
