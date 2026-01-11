@@ -30,7 +30,8 @@ app_ui <- function(request) {
       bslib::nav_panel("Name Mapping",
                        mod_name_map_ui("name_map_1", kinome_data = use_kinome_data)),
       bslib::nav_panel("Help"),
-      bslib::nav_panel("About"),
+      bslib::nav_panel("About",
+                       mod_about_ui("about_1")),
       bslib::nav_spacer(),
       bslib::nav_item(shiny::tags$a(shiny::icon("github"), "GitHub", href = "https://github.com/yasche", target = "_blank")),
       bslib::nav_item(shiny::tags$a(shiny::icon("envelope"), "Contact", href = "mailto:r-packages@yannik.science", target = "_blank"))
