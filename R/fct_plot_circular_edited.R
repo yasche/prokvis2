@@ -1,4 +1,6 @@
-#' plot_circular_edited
+#' Create the final plot for the circular tab
+#'
+#' @description Decorate the circular base plot created with `plot_circular_base()` with user-supplied values.
 #'
 #' @param circular_base The base plot created with `plot_circular_base`
 #' @param combined_nodes_and_edges A table containing information on node and edge appearance, created with `combine_nodes_and_edges`
@@ -18,9 +20,7 @@
 #' @param color_palette `character` The name of a color palette from the `scico` package, `"Custom"` or `"Default ggplot2"`
 #' @param custom_color_pal A reactive created with function `custom_color_nums_to_pal()`
 #'
-#' @description A fct function
-#'
-#' @return The return value, if any, from executing the function.
+#' @return The final plot as a `ggplot` object.
 #'
 #' @noRd
 plot_circular_edited <- function(circular_base,
@@ -359,22 +359,7 @@ get_mrcas <- function(kinome_df, circular_base){
 }
 
 
-#' custom_color_nums_to_pal
-#'
-#' @param custom_color_nums A reactive created with the function `kinase_groups_to_custom_color_numbers()`
-#'
-#' @description Convert custom color numbers to a custom palette
-#'
-#' @return The return value, if any, from executing the function.
-#'
-#' @noRd
-custom_color_nums_to_pal <- function(custom_color_nums, input) {
-  cols <- purrr::map_chr(custom_color_nums, ~ input[[.x]] %||% "")
-  # convert empty inputs to transparent
-  cols[cols == ""] <- NA
 
-  cols
-}
 
 
 helper_highlight_circular <- function(p, mrcas, group_highlighter_alpha) {
@@ -395,10 +380,6 @@ quiet_helper_highlight_circular <- function(...) {
   if (rlang::is_empty(res$warnings) == FALSE) {
     rlang::warn(res$warnings)
   }
-
-  # if (rlang::is_empty(res$messages) == FALSE) {
-    # rlang::inform(res$messages)
-  # }
 
   res$result
 }

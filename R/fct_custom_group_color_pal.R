@@ -48,3 +48,22 @@ kinase_groups_to_custom_color_numbers <- function(kinase_groups) {
   paste0("custom_group_col", seq_len(length(kinase_groups)))
 }
 
+
+#' Extract custom colors for each kinase group from the `input`
+#'
+#' @description Extract the custom colors created with `kinase_groups_to_custom_color_numbers()` for each kinase group from `input` and return them as a character vector
+#'
+#' @param custom_color_nums The unique color numbers for each kinase group, created with `kinase_groups_to_custom_color_numbers()`
+#'
+#' @description Convert custom color numbers to a custom palette
+#'
+#' @return A character vector containing the custom group colors
+#'
+#' @noRd
+custom_color_nums_to_pal <- function(custom_color_nums, input) {
+  cols <- purrr::map_chr(custom_color_nums, ~ input[[.x]] %||% "")
+  # convert empty inputs to transparent
+  cols[cols == ""] <- NA
+
+  cols
+}
