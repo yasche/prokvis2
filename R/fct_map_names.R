@@ -1,12 +1,12 @@
-#' map_names
+#' Map kinase names to their manning names
 #'
-#' @description A fct function
+#' @description Function to map an identifier, for example a gene name or a UniProt accession, to a Manning kinase name.
 #'
 #' @param kinome_data A `kinome_data` object
 #' @param species_selection The two-letter code of the species (e.g., `hs` for human)
 #' @param kinase_names Character value where the kinases to map are separated by a linebreak (i.e., `\n`)
 #'
-#' @return The return value, if any, from executing the function.
+#' @return A Tibble with the columns `Input`, (the suggested) `Manning Name`, `Include` and `Aliases`.
 #'
 #' @noRd
 map_names <- function(kinome_data, species_selection, kinase_names, aliases) {
@@ -28,7 +28,10 @@ map_names <- function(kinome_data, species_selection, kinase_names, aliases) {
 
 #' Helper function to select rows in a data frame by index
 #'
-#' @description A fct function
+#' @description Small helper function
+#'
+#' @param indices A numeric - Which rows to keep.
+#' @param df A data frame.
 #'
 #' @return a subset of `df` which only contains the `indices`.
 #'
@@ -37,6 +40,14 @@ select_rows_int <- function(indices, df) {
   df[indices, ]
 }
 
+#' Turn the name map tibble into an rhot object
+#'
+#' @param name_map_df A tibble - created with `map_names()`
+#' @param aliases A tibble - the aliases of a species, created with `extract_aliases_df()`
+#'
+#' @returns An rhot onject.
+#'
+#' @noRd
 name_map_df2rhot <- function(name_map_df, aliases) {
   rhandsontable::rhandsontable(name_map_df, height = 500) %>%
     rhandsontable::hot_table(stretchH = "all") %>%
@@ -49,9 +60,10 @@ name_map_df2rhot <- function(name_map_df, aliases) {
 
 #' Helper function to extract the alias df from kinome_data list
 #'
-#' @description A fct function
+#' @param kinome_data A `kinome_data` object
+#' @param species_selection The two-letter code of the species (e.g., `hs` for human)
 #'
-#' @return A data frame containing the aliases for a given species..
+#' @return A data frame containing the aliases for a given species.
 #'
 #' @noRd
 extract_aliases_df <- function(kinome_data, species_selection) {
@@ -60,7 +72,11 @@ extract_aliases_df <- function(kinome_data, species_selection) {
 
 #' Wrapper function for easier inclusion in the server function
 #'
-#' @description A fct function
+#' @description Create an rhot object to use it in the name map tab.
+#'
+#' @param kinome_data A `kinome_data` object
+#' @param species_selection The two-letter code of the species (e.g., `hs` for human)
+#' @param kinase_names The names to map.
 #'
 #' @return The result from `map_names` converted to an rhot.
 #'
@@ -72,6 +88,13 @@ name_map_rhot <- function(kinome_data, species_selection, kinase_names) {
     name_map_df2rhot(aliases)
 }
 
+#' Download the results of the name map
+#'
+#' @description Helper function to handle downloads of the name map.
+#'
+#' @param mapped_kinases_rhot An rhot object containing the mapped kinases (created with `name_map_rhot()`)
+#'
+#' @noRd
 name_map_dl_helper <- function(mapped_kinases_rhot) {
   if(!is.null(mapped_kinases_rhot)) {
     mapped_kinases_rhot %>%

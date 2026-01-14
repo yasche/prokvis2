@@ -1,4 +1,4 @@
-#' nodes_and_edges
+#' Create an rhot table to manually edit the appearance of kinases, groups, families and subfamilies.
 #'
 #' @description Create a rhot to manually change node and edge behavior.
 #'
@@ -18,7 +18,7 @@ nodes_and_edges <- function(kinome_df, which_ne) {
     ne_df_to_rhot_helper(ne_names)
 }
 
-#' ne_df_helper
+#' Helper to an empty data frame
 #'
 #' @description Create an empty data frame with `length(ne_names)` rows.
 #'
@@ -39,7 +39,7 @@ ne_df_helper <- function(ne_names) {
              Clabel =  character(length = ne_names_length))
 }
 
-#' ne_df_helper
+#' Convert `ne_df` to an rhot
 #'
 #' @description Convert the data frame created with `ne_df_helper()` to an rhot.
 #'
@@ -61,7 +61,19 @@ ne_df_to_rhot_helper <- function(ne_df, ne_names) {
                                                             "inverted triangle"), strict = TRUE)
 }
 
-
+#' Combine the nodes and edges
+#'
+#' @description Combine the manually edited nodes and edges (i.e., the kinases, their groups, families and subfamilies) to one tibble.
+#'
+#' @param kinase_edges_hot rhot of the kinase edges
+#' @param group_nodes_hot rhot of the kinase group nodes
+#' @param family_nodes_hot rhot of the kinase family nodes
+#' @param subfamily_nodes_hot rhot of the kinase subfamily nodes
+#' @param kinome_df a kinome df created with `extract_kinome_df`
+#'
+#' @return A tibble containg the kinases, groups, families and subfamilies, and an origin.
+#'
+#' @noRd
 combine_nodes_and_edges <- function(kinase_edges_hot, group_nodes_hot, family_nodes_hot, subfamily_nodes_hot, kinome_df) {
   kinases <- ne_rhot_to_df_helper(kinase_edges_hot, "Manning_Name", kinome_df, NULL)
   kgroups <- ne_rhot_to_df_helper(group_nodes_hot, "Kinase_Group", kinome_df, "Group")
@@ -84,6 +96,20 @@ combine_nodes_and_edges <- function(kinase_edges_hot, group_nodes_hot, family_no
   rbind(kinases, kgroups, kfams, ksubfams, origin)
 }
 
+
+#' Convert rhot back to a df.
+#'
+#' @description
+#' Convert the rhot objects of kinase edges, group, family and subfamily nodes back to a df.
+#'
+#' @param ne_rhot The rhot object of a node or edge.
+#' @param which_ne Which node or edge? (Name, Group, Family, Subfamily)
+#' @param kinome_df A kinome df.
+#' @param prefix Is a prefix used? This is the case for all nes except for Name.
+#'
+#' @return A tibble.
+#'
+#' @noRd
 ne_rhot_to_df_helper <- function(ne_rhot, which_ne, kinome_df, prefix) {
   ne_df <- rhandsontable::hot_to_r(ne_rhot) %||% data.frame(Name = character(),
                                                             Size = numeric(),
@@ -131,7 +157,13 @@ ne_rhot_to_df_helper <- function(ne_rhot, which_ne, kinome_df, prefix) {
     dplyr::mutate(Stroke = dplyr::case_when(Stroke == "" ~ Color, .default = .data$Stroke))
 }
 
-
+#' Helper function to turn point shape names to numbers.
+#'
+#' @param shape The name of the shape.
+#'
+#' @return A numeric vector containing the point shapes encoded by their numbers.
+#'
+#' @noRd
 pointshape <- function(shape) {
   stringr::str_replace_all(shape, c("circle" = "21",
                                     "square" = "22",

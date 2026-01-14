@@ -1,4 +1,4 @@
-#' custom_group_color_input
+#' Create the input for custom group colors
 #'
 #' @description Wrapper function to create the colourInputs for the individual groups if the palette is set to "Custom".
 #'
@@ -12,7 +12,7 @@
 #' @noRd
 custom_group_color_input <- function(custom_color_nums, kinase_groups, ns, id) {
   list(
-    #partly adapted from https://mastering-shiny.org/action-dynamic.html
+    # partly adapted from https://mastering-shiny.org/action-dynamic.html
     "Choose a custom color for each group",
     shiny::HTML("<br><br>"),
     # paste0(id, "-custom_group_col", collapse = "") hack to account for ns()
@@ -20,7 +20,7 @@ custom_group_color_input <- function(custom_color_nums, kinase_groups, ns, id) {
   )
 }
 
-#' extract_kinase_groups
+#' Extract kinase groups from a given species from the `kinome_data` object
 #'
 #' @description Helper function to extract the kinase groups
 #'
@@ -35,7 +35,7 @@ extract_kinase_groups <- function(kinome_df) {
     unique()
 }
 
-#' kinase_groups_to_custom_color_numbers
+#' Encode kinase groups with prefix, followed by a unique number
 #'
 #' @description Helper function to turn kinase groups into unique numbers with prefix "custom_group_col".
 #'

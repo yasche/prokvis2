@@ -1,6 +1,6 @@
-#' kinome_df_to_igraph
+#' Turns a kinome df into an `igraph` object.
 #'
-#' @description Turns a kinome df into an `igraph` object.
+#' @description Turn a kinome into an `igraph` object were an Origin is connected to the kinase groups, the kinase groups are connected to the kinase families, the kinase families are connected to the kinase subfamilies (if available) and they are connected to the individual kinases.
 #'
 #' @param kinome_df A kinome data frame of the selected species
 #'
@@ -8,30 +8,29 @@
 #'
 #' @noRd
 kinome_df_to_igraph <- function(kinome_df) {
-  #"Group ", "Family ", "Subfamily " are because sometimes kinase name and subfamily etc are the same. this avoids circular connections
+  # "Group ", "Family ", "Subfamily " are because sometimes kinase name and subfamily etc are the same. this avoids circular connections
 
-  #Branch length is added as metadata to later be extracted:
-  #Origin -> Group -> Family -> Subfamily -> Kinase
+  # Branch length is added as metadata to later be extracted:
+  # Origin -> Group -> Family -> Subfamily -> Kinase
   #        .25    .25        .25          .25
-  #Origin -> Group -> Family ->              Kinase
+  # Origin -> Group -> Family ->              Kinase
   #        .25    .25        .5
 
-
-  #create origin -> group sub_df
+  # create origin -> group sub_df
   o2g <- kinome_df %>%
     dplyr::select("Kinase_Group") %>%
     dplyr::transmute(from = "Origin",
                      to = paste("x0.25_", "Group ", .data$Kinase_Group, sep = "")) %>%
     dplyr::distinct()
 
-  #create group -> family sub_df
+  # create group -> family sub_df
   g2f <- kinome_df %>%
     dplyr::select("Kinase_Group", "Kinase_Family") %>%
     dplyr::transmute(from = paste("x0.25_", "Group ", .data$Kinase_Group, sep = ""),
                      to = paste("x0.25_", "Family ", .data$Kinase_Family, sep = "")) %>%
     dplyr::distinct()
 
-  #create family -> kinase sub_df (kinases that do not have a subfamily)
+  # create family -> kinase sub_df (kinases that do not have a subfamily)
   f2k <- kinome_df %>%
     dplyr::filter(is.na(.data$Kinase_Subfamily)) %>%
     dplyr::select("Kinase_Family", "Manning_Name") %>%
@@ -39,7 +38,7 @@ kinome_df_to_igraph <- function(kinome_df) {
                      to = paste("x0.50_", .data$Manning_Name, sep = "")) %>%
     dplyr::distinct()
 
-  #create family -> subfamily sub_df
+  # create family -> subfamily sub_df
   f2s <- kinome_df %>%
     dplyr::filter(!is.na(.data$Kinase_Subfamily)) %>%
     dplyr::select("Kinase_Family", "Kinase_Subfamily") %>%
@@ -47,7 +46,7 @@ kinome_df_to_igraph <- function(kinome_df) {
                      to = paste("x0.25_", "Subfamily ", .data$Kinase_Subfamily, sep = "")) %>%
     dplyr::distinct()
 
-  #create subfamily -> kinase sub_df (kinases that do have a subfamily)
+  # create subfamily -> kinase sub_df (kinases that do have a subfamily)
   s2k <- kinome_df %>%
     dplyr::filter(!is.na(.data$Kinase_Subfamily)) %>%
     dplyr::select("Kinase_Subfamily", "Manning_Name") %>%

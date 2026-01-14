@@ -1,4 +1,4 @@
-#' manual_group_label_pos_input
+#' Create the input for custom group label position
 #'
 #' @description Wrapper function to create inputs in case a custom nudge for group labels is enabled in network plot.
 #'
@@ -11,7 +11,7 @@
 #'
 #' @noRd
 manual_group_label_pos_input <- function(custom_xy, kinase_groups, ns, id) {
-  #partly adapted from https://mastering-shiny.org/action-dynamic.html
+  # partly adapted from https://mastering-shiny.org/action-dynamic.html
   id_label <- paste0(id, "-custom_group_pos_", collapse = "")
 
   purrr::map(ns(custom_xy), ~ shiny::numericInput(
@@ -22,7 +22,7 @@ manual_group_label_pos_input <- function(custom_xy, kinase_groups, ns, id) {
   )
 }
 
-#' kinase_groups_to_custom_xy
+#' Encode kinase groups with a prefix for x and y position, followed by a unique number
 #'
 #' @description Helper function to turn kinase groups into unique numbers with prefix "custom_group_pos_x" and "custom_group_pos_y".
 #'
@@ -40,7 +40,17 @@ kinase_groups_to_custom_xy <- function(kinase_groups) {
   as.vector(rbind(posx, posy))
 }
 
-
+#' Extract custom x and y nudges for each kinase from the `input`
+#'
+#' @description Extract the custom nudges created with `kinase_groups_to_custom_xy()` for each kinase group from `input` and return them as a tibble.
+#'
+#' @param custom_xy_nums The unique x and y numbers for each kinase group, created with `kinase_groups_to_custom_xy()`
+#' @param input The `input` from the shiny server
+#' @param kinase_groups A vector containing the kinase groups.
+#'
+#' @return A matrix containing the x and y nudge for each kinase group.
+#'
+#' @noRd
 custom_xy_nums_to_nudge <- function(custom_xy_nums, input, kinase_groups) {
   xy <- purrr::map_dbl(custom_xy_nums, ~ input[[.x]] %||% 0)
   length_xy <- length(xy)
