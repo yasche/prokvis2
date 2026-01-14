@@ -40,7 +40,7 @@ kinase_groups_to_custom_xy <- function(kinase_groups) {
   as.vector(rbind(posx, posy))
 }
 
-#' Extract custom x and y nudges for each kinase from the `input`
+#' Extract custom x and y nudges for each kinase group from the `input`
 #'
 #' @description Extract the custom nudges created with `kinase_groups_to_custom_xy()` for each kinase group from `input` and return them as a tibble.
 #'

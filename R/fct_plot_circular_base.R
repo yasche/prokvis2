@@ -1,4 +1,4 @@
-#' plot_circular_base
+#' Create the base plot for the circular tab
 #'
 #' @description Create the circular base plot without any decoration.
 #'
