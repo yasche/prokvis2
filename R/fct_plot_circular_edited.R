@@ -2,17 +2,17 @@
 #'
 #' @description Decorate the circular base plot created with `plot_circular_base()` with user-supplied values.
 #'
-#' @param circular_base The base plot created with `plot_circular_base`
-#' @param combined_nodes_and_edges A table containing information on node and edge appearance, created with `combine_nodes_and_edges`
+#' @param circular_base The base plot created with `plot_circular_base()`
+#' @param combined_nodes_and_edges A table containing information on node and edge appearance, created with `combine_nodes_and_edges()`
 #' @param selected_kinome The kinome data frame
 #' @param color_branches_groups `logical` should branches be colored based on groups?
 #' @param branch_thickness `numeric` branch thickness
 #' @param default_branch_color `character` if `color_branches_groups = FALSE`, what color should be used for the branches?
-#' @param color_kinase_edges_groups `logical` should kinase edges be colored based on their groups? Overwrites the colors supplied with `combined_nodes_and_edges` if set to `TRUE`
+#' @param color_kinase_edges_groups `logical` should kinase edges be colored based on their groups? Overwrites the colors supplied with `combined_nodes_and_edges()` if set to `TRUE`
 #' @param show_kinases_labels `character` which kinase labels should be shown? One of `c("All", "None", "Annotated", "Manual selection")`
 #' @param kinase_labels_manual_selection `character` Name of the kinases whose labels should be shown if `show_kinases_labels = "Manual selection"`
 #' @param kinase_edges_hot `data.frame` containing kinase edges
-#' @param show_which_kinase_labels `character` the source of the kinase names. One of `c("Manning Name", "Uniprot gene name", "Uniprot entry", "Uniprot kinase name", "Uniprot accession", "Custom")`. If `"Custom"`, a Clabel for each kinase must be supplied in `combine_nodes_and_edges`.
+#' @param show_which_kinase_labels `character` the source of the kinase names. One of `c("Manning Name", "Uniprot gene name", "Uniprot entry", "Uniprot kinase name", "Uniprot accession", "Custom")`. If `"Custom"`, a Clabel for each kinase must be supplied in `combine_nodes_and_edges()`.
 #' @param color_kinase_labels_groups `logical` should kinase labels be colored based on groups?
 #' @param label_size `numeric` the kinase label size
 #' @param default_label_color `character` which color should be used for kinase labels? Only necessary if `color_kinase_labels_groups = FALSE`
@@ -49,9 +49,6 @@ plot_circular_edited <- function(circular_base,
                                  highlight_groups,
                                  group_highlighter_alpha
                                  ) {
-
-
-  #print(group_nodes_hot, n = 10000)
 
   # put this in a separate function/reactive to speed up plotting?
 
@@ -297,9 +294,18 @@ plot_circular_edited <- function(circular_base,
 }
 
 
+#' Assign branch group for circular plot
+#'
+#' @description
+#' Add branch groups for kinases, mainly used to set the color for plotting.
+#'
+#' @param kinome_df A kinome df, created with `extract_kinome_df()`
+#' @param circular_base The base plot created with `plot_circular_base()`
+#'
+#' @returns A tibble were each kinase is assigned their group.
+#'
+#' @noRd
 assign_branch_groups_circular <- function(kinome_df, circular_base) {
-  #assign branch group for circular plot
-
   tmp_df1 <- kinome_df %>%
     dplyr::select("Kinase_Group") %>%
     dplyr::transmute(glabel = paste("Group ", .data$Kinase_Group, sep = ""),
@@ -339,6 +345,17 @@ assign_branch_groups_circular <- function(kinome_df, circular_base) {
     rbind(tmp_df4)
 }
 
+#' Get the Most Recent Common Ancestor for each node
+#'
+#' @description
+#' MRCAs are required for certain color options (highlight).
+#'
+#' @param kinome_df A kinome df, created with `extract_kinome_df()`
+#' @param circular_base The base plot created with `plot_circular_base()`
+#'
+#' @returns A tibble containing MRCAs for each node.
+#'
+#' @noRd
 get_mrcas <- function(kinome_df, circular_base){
   kgroups <- unique(kinome_df$Kinase_Group)
 
@@ -359,9 +376,17 @@ get_mrcas <- function(kinome_df, circular_base){
 }
 
 
-
-
-
+#' Helper to highlight groups.
+#'
+#'  @description
+#'  This function and `quiet_helper_highlight_circular()` are used to silence non-informative messages from `ggtree`.
+#'
+#' @param p `ggplot` - A `ggtree` plot.
+#' @param mrcas `tibble` - the most MRCAs created with `get_mrcas()`
+#' @param group_highlighter_alpha `numeric` - Alpha value to be used
+#'
+#' @returns A plot with highlighted groups.
+#' @noRd
 helper_highlight_circular <- function(p, mrcas, group_highlighter_alpha) {
   # .data pronoun somehow does not work inside ggtree::geom_highlight
   # therefore this hack is used
@@ -370,6 +395,12 @@ helper_highlight_circular <- function(p, mrcas, group_highlighter_alpha) {
   p + ggtree::geom_highlight(data = mrcas, ggplot2::aes(node = node, fill = glabel2), alpha = group_highlighter_alpha)
 }
 
+#' Helper to silence messages from `helper_highlight_circular()`
+#'
+#' @param ... Parameters passed to `helper_highlight_circular()`
+#'
+#' @returns A modified function.
+#' @noRd
 quiet_helper_highlight_circular <- function(...) {
   res <- purrr::quietly(helper_highlight_circular)(...)
 
