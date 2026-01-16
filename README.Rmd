@@ -35,7 +35,7 @@ pak::pak("yasche/prokvis2")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+prokvis2 has one central user-facing function, `run_app()`, that launches the Shiny application:
 
 ```{r example, eval=FALSE}
 library(prokvis2)
