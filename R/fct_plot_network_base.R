@@ -1,8 +1,11 @@
-#' plot_network_base
+#' Create the base plot for the network tab
 #'
-#' @description A fct function
+#' @description Create the network base plot without any decoration.
 #'
-#' @return The return value, if any, from executing the function.
+#' @param kinome_df A kinome data frame, created with `extract_kinome_df()`.
+#' @param set_seed `numeric` or `NULL` - A random seed to reproduce the graph layout.
+#'
+#' @return A `network` object to be used as the network base plot.
 #'
 #' @noRd
 plot_network_base <- function(kinome_df, set_seed) {
@@ -20,6 +23,16 @@ plot_network_base <- function(kinome_df, set_seed) {
 }
 
 
+#' Helper function to create the network base plot
+#'
+#' @description
+#' This helper function is necessary to preserve the current random seed (i.e., not to disturb the user's R 'landscape').
+#'
+#' @param reduced_kinome `tibble` - A reduced kinome tibble with columns `Manning_Name`, `Kinase_Group`, `Kinase_Family`, `Kinase_Subfamily`
+#'
+#' @returns A `network` object.
+#'
+#' @noRd
 plot_network_base_helper <- function(reduced_kinome) {
   reduced_kinome %>%
     kinome_df_to_igraph() %>%

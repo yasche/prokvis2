@@ -1,6 +1,6 @@
 #' plots UI Function
 #'
-#' @description A shiny Module.
+#' @description Module for the Plots tab. Depending on the sub tab this module's output changes.
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'

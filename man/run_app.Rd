@@ -14,7 +14,7 @@ run_app(
 )
 }
 \arguments{
-\item{custom_kinome_data}{Either `NULL` to run the app with the internal `kinome_data` object or the path to a custom `kinome_data` file.}
+\item{custom_kinome_data}{Either `NULL` to run the app with the internal `kinome_data` object or the path to a custom `kinome_data.rds` file.}
 
 \item{onStart}{A function that will be called before the app is actually run.
 This is only needed for \code{shinyAppObj}, since in the \code{shinyAppDir}
@@ -40,5 +40,15 @@ expression in order for the match to be considered successful.}
 See `?golem::get_golem_options` for more details.}
 }
 \description{
-Run the Shiny Application
+Calling this function launches the prokvis2 Shiny app to create visualizations of kinase data.
+}
+\examples{
+\dontrun{
+# Start the app with the internal `kinome_data` object:
+run_app()
+
+# Start the app with a user-supplied `kinome_data` file:
+run_app(custom_kinome_data = "path/to/kinome_data.rds")
+}
+
 }

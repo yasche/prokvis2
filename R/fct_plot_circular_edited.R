@@ -5,20 +5,28 @@
 #' @param circular_base The base plot created with `plot_circular_base()`
 #' @param combined_nodes_and_edges A table containing information on node and edge appearance, created with `combine_nodes_and_edges()`
 #' @param selected_kinome The kinome data frame
-#' @param color_branches_groups `logical` should branches be colored based on groups?
-#' @param branch_thickness `numeric` branch thickness
-#' @param default_branch_color `character` if `color_branches_groups = FALSE`, what color should be used for the branches?
-#' @param color_kinase_edges_groups `logical` should kinase edges be colored based on their groups? Overwrites the colors supplied with `combined_nodes_and_edges()` if set to `TRUE`
-#' @param show_kinases_labels `character` which kinase labels should be shown? One of `c("All", "None", "Annotated", "Manual selection")`
-#' @param kinase_labels_manual_selection `character` Name of the kinases whose labels should be shown if `show_kinases_labels = "Manual selection"`
-#' @param kinase_edges_hot `data.frame` containing kinase edges
-#' @param show_which_kinase_labels `character` the source of the kinase names. One of `c("Manning Name", "Uniprot gene name", "Uniprot entry", "Uniprot kinase name", "Uniprot accession", "Custom")`. If `"Custom"`, a Clabel for each kinase must be supplied in `combine_nodes_and_edges()`.
-#' @param color_kinase_labels_groups `logical` should kinase labels be colored based on groups?
-#' @param label_size `numeric` the kinase label size
-#' @param default_label_color `character` which color should be used for kinase labels? Only necessary if `color_kinase_labels_groups = FALSE`
+#' @param color_branches_groups `logical` - should branches be colored based on groups?
+#' @param branch_thickness `numeric` - branch thickness
+#' @param default_branch_color `character` - if `color_branches_groups = FALSE`, what color should be used for the branches?
+#' @param color_kinase_edges_groups `logical` - should kinase edges be colored based on their groups? Overwrites the colors supplied with `combined_nodes_and_edges()` if set to `TRUE`
+#' @param show_kinases_labels `character` - which kinase labels should be shown? One of `c("All", "None", "Annotated", "Manual selection")`
+#' @param kinase_labels_manual_selection `character` - Name of the kinases whose labels should be shown if `show_kinases_labels = "Manual selection"`
+#' @param kinase_edges_hot `data.frame` - containing kinase edges
+#' @param show_which_kinase_labels `character` - the source of the kinase names. One of `c("Manning Name", "Uniprot gene name", "Uniprot entry", "Uniprot kinase name", "Uniprot accession", "Custom")`. If `"Custom"`, a Clabel for each kinase must be supplied in `combine_nodes_and_edges()`.
+#' @param color_kinase_labels_groups `logical` - should kinase labels be colored based on groups?
+#' @param label_size `numeric` - the kinase label size
+#' @param default_label_color `character` - which color should be used for kinase labels? Only necessary if `color_kinase_labels_groups = FALSE`
 #' @param mrcas A rective created with function `get_mrcas()`
-#' @param color_palette `character` The name of a color palette from the `scico` package, `"Custom"` or `"Default ggplot2"`
+#' @param color_palette `character` - The name of a color palette from the `scico` package, `"Custom"` or `"Default ggplot2"`
 #' @param custom_color_pal A reactive created with function `custom_color_nums_to_pal()`
+#' @param group_label_radius `numeric` - Group labels are placed on a circle around the plot with this radius.
+#' @param show_group_labels `logical` - Should group labels be displayed?
+#' @param group_label_size `numeric` - The group label size.
+#' @param legend_label_size `numeric` - The font size used in the legend labels.
+#' @param legend_title_size `numeric` - The font size used in the legend title.
+#' @param hide_legend `logical` - If `TRUE` the legend is hidden, if `FALSE` it is displayed.
+#' @param highlight_groups `logical` - If `TRUE` the Kinase Groups are highlighted in a specific color.
+#' @param group_highlighter_alpha `numeric` - Only necessary if `highlight_groups = TRUE`; the alpha used for the group highlighter.
 #'
 #' @return The final plot as a `ggplot` object.
 #'

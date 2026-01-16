@@ -1,6 +1,6 @@
 #' name_map UI Function
 #'
-#' @description A shiny Module.
+#' @description Module for the Name Map tab. This module helps translate other kinase names to Manning Names.
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'

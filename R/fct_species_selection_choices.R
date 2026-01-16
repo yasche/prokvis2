@@ -1,4 +1,4 @@
-#' species_selection_choices
+#' Extract all species present in a `kinome_data` object to use them in a `selectInput`.
 #'
 #' @description Create the species selection choices from the kinome_data object
 #'

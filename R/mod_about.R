@@ -1,6 +1,6 @@
 #' about UI Function
 #'
-#' @description A shiny Module.
+#' @description Module for the About tab. Only here to display the contents of `about.html`.
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'
@@ -18,6 +18,9 @@ mod_about_ui <- function(id) {
 }
 
 #' About server is not needed
+#'
+#' @description
+#' Not really needed (yet)
 #'
 #' @noRd
 mod_about_server <- function(id){
