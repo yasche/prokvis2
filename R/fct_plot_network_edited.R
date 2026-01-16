@@ -286,7 +286,10 @@ plot_network_edited <- function(network_base,
     p <- p + ggplot2::theme(legend.position = "none")
   }
 
-  return(p)
+  p + ggplot2::theme(panel.background = ggplot2::element_blank(),
+                     axis.title = ggplot2::element_blank(),
+                     axis.text = ggplot2::element_blank(),
+                     axis.ticks = ggplot2::element_blank())
 }
 
 #' Assign branch group for network plot
