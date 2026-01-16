@@ -60,7 +60,7 @@ mod_plots_ui <- function(id, plot_tab, kinome_data) {
             ),
             bslib::accordion_panel(
               "Label Settings", icon = bsicons::bs_icon("fonts"),
-              shiny::selectInput(ns("chosen_font"), "Font", c("some", "font", "names"), multiple = FALSE),
+              #shiny::selectInput(ns("chosen_font"), "Font", c("some", "font", "names"), multiple = FALSE),
               shiny::selectInput(ns("show_kinases_labels"), "Show kinase labels",
                                  choices = c("None",
                                              "All",
