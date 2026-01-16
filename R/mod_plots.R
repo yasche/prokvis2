@@ -27,8 +27,8 @@ mod_plots_ui <- function(id, plot_tab, kinome_data) {
               },
               shiny::numericInput(ns("branch_thickness"), "Branch thickness", min = 0, value = 0.15, step = 0.05),
               shiny::checkboxInput(ns("hide_legend"), "Hide legend", value = FALSE),
-              shiny::numericInput(ns("plot_height"), "Plot height in pixels", value = 1000),
-              shiny::numericInput(ns("plot_width"), "Plot width in pixels", value = 1000),
+              shiny::numericInput(ns("plot_height"), "Plot height in pixels", value = 1000, min = 1, max = 1000),
+              shiny::numericInput(ns("plot_width"), "Plot width in pixels", value = 1000, min = 1, max = 1000),
 
               if (plot_tab == "phylo") {
                 list(
@@ -123,10 +123,10 @@ mod_plots_ui <- function(id, plot_tab, kinome_data) {
 
       # the page content goes here
       if (plot_tab == "circular") {
-        shiny::plotOutput(ns("plot_circular"))
+        shiny::plotOutput(ns("plot_circular"), width = 1000)
       },
       if (plot_tab == "network") {
-        shiny::plotOutput(ns("plot_network"))
+        shiny::plotOutput(ns("plot_network"), width = 1000)
       },
       if (plot_tab == "table") {
         DT::dataTableOutput(ns("kinome_table"))
