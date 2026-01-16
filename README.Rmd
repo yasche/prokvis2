@@ -1,5 +1,6 @@
 ---
 output: github_document
+bibliography: references.bib
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -16,10 +17,12 @@ knitr::opts_chunk$set(
 # prokvis2
 
 <!-- badges: start -->
+
 [![R-CMD-check](https://github.com/yasche/prokvis2/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/yasche/prokvis2/actions/workflows/R-CMD-check.yaml)
+
 <!-- badges: end -->
 
-The goal of prokvis2 is to ...
+The goal of prokvis2 is to provide an easy-to-use Shiny application to create intuitive visualizations of kinome data similar to KinMap [@eid2017] and CORAL [@metz2018]. What is unique about prokvis2 is its ability to visualize the kinomes of several model organisms, including mouse, fruit fly and Baker's yeast, besides that of humans.
 
 ## Installation
 
@@ -37,5 +40,11 @@ This is a basic example which shows you how to solve a common problem:
 ```{r example, eval=FALSE}
 library(prokvis2)
 
+# Start the app with the internal `kinome_data` object:
 run_app()
+
+# Start the app with a user-supplied `kinome_data` file:
+run_app(custom_kinome_data = "path/to/kinome_data.rds")
 ```
+
+## References
