@@ -204,26 +204,6 @@ mod_plots_server <- function(id, kinome_data){
         group_highlighter_alpha = input$group_highlighter_alpha
       )
 
-      ## access custom color palette
-      #cols <- purrr::map_chr(reactive_custom_color_nums(), ~ input[[.x]] %||% "")
-      ## convert empty inputs to transparent
-      #cols[cols == ""] <- NA
-
-      #print(cols)
-
-      # access custom x/y nudge for group labels in network plot
-      #pos_nudge <- purrr::map_dbl(reactive_custom_xy(), ~ input[[.x]] %||% 0)
-      #pos_nudge <- matrix(nrow = length(pos_nudge) / 2, ncol = 2, byrow = TRUE)
-
-      #colnames(pos_nudge) <- c("x_nudge", "y_nudge")
-
-      #pos_nudge <- tibble::as_tibble(pos_nudge) %>%
-      #  dplyr::mutate(label = reactive_kinase_groups())
-
-      #print(pos_nudge)
-
-      #print(input)
-
       p
     })
 
@@ -358,36 +338,18 @@ mod_plots_server <- function(id, kinome_data){
     })
 
     reactive_combined_nodes_and_edges <- shiny::reactive({
-      #print(rhandsontable::hot_to_r(input$group_nodes_hot))
-      #print("")
-      #print("")
       r_tbl <- combine_nodes_and_edges(kinase_edges_hot = input$kinase_edges_hot,
                               group_nodes_hot = input$group_nodes_hot,
                               family_nodes_hot = input$family_nodes_hot,
                               subfamily_nodes_hot = input$subfamily_nodes_hot,
                               kinome_df = reactive_kinome_df())
 
-      #print(r_tbl, n = 1000)
       r_tbl
     })
     # start code for the manual editing of nodes and edges
 
     # start code for server-side UI elements
     ## start code for custom group color pal
-
-    #output$ui_custom_color_pal_tf <- shiny::renderUI({
-    # switched to conditionalPanel to prevent re-run each time palette is changed
-    #  col_ui_element <- list(
-    #    #partly adapted from https://mastering-shiny.org/action-dynamic.html
-    #    "Choose a custom color for each group",
-    #    shiny::HTML("<br><br>"),
-    #    purrr::map(ns(reactive_custom_color_nums()), ~ colourpicker::colourInput(.x, reactive_kinase_groups()[as.numeric(stringr::str_remove(.x, paste0(id, "-custom_group_col", collapse = "")))], value = "#BEBEBE"))
-    #    #purrr::map(ns(reactive_custom_color_nums()), ~ colourpicker::colourInput(.x, reactive_kinase_groups()[as.numeric(stringr::str_remove(stringr::str_split_i(.x, "\\-", 2), "custom_group_col"))], value = "#BEBEBE"))
-    #  )
-    #  if (input$color_palette == "Custom") {
-    #    col_ui_element
-    #  }
-    #})
 
     output$ui_custom_color_pal <- shiny::renderUI({
       shiny::conditionalPanel(
@@ -442,7 +404,6 @@ mod_plots_server <- function(id, kinome_data){
     output$ui_manual_selection_input <- shiny::renderUI({
       shiny::conditionalPanel(
         condition = "input.show_kinases_labels == 'Manual selection'",
-        # Server code missing!
         shiny::selectizeInput(ns("kinase_labels_manual_selection"), "", reactive_kinases(), multiple = TRUE),
         ns = ns
       )

@@ -59,10 +59,6 @@ plot_network_edited <- function(network_base,
                                 legend_title_size,
                                 hide_legend) {
 
-  # print(combined_nodes_and_edges, n = 1000)
-  # print(network_base)
-  # return(NULL)
-
   group_label_size <- group_label_size %||% 5
 
   combined_nodes_and_edges <- combined_nodes_and_edges %>%
@@ -75,7 +71,7 @@ plot_network_edited <- function(network_base,
     dplyr::left_join(combined_nodes_and_edges, by = dplyr::join_by("vertex.names" == "Name")) %>%
     dplyr::left_join(dplyr::select(selected_kinome, "Manning_Name", "Uniprot_Gene_Name", "Uniprot_Entry", "Kinase_Name", "Uniprot_Accession"), by = dplyr::join_by("vertex.names" == "Manning_Name"), multiple = "first")
 
-  #check if branches should be colored based on groups
+  # check if branches should be colored based on groups
   if (color_branches_groups == TRUE) {
 
     network_base <- assign_branch_groups_network(kinome_df = selected_kinome,
@@ -91,12 +87,6 @@ plot_network_edited <- function(network_base,
   }
 
   if(color_kinase_edges_groups == FALSE) {
-    #sizes <- c(combined_nodes_and_edges()$Size)
-    #names(sizes) <- c(combined_nodes_and_edges()$Name)
-
-    #colors <- combined_nodes_and_edges()$Color
-    #names(colors) <- combined_nodes_and_edges()$Name
-
     p <- p + ggplot2::geom_point(size = p$data$Size,
                                  fill = p$data$Color,
                                  pch = p$data$Shape,
@@ -109,13 +99,13 @@ plot_network_edited <- function(network_base,
   # (important for hiding kinases)
   p$data$vertex.names2 <- p$data$vertex.names
 
-  #remove family and subfamily labels (for now)
+  # remove family and subfamily labels (for now)
 
   p$data <- p$data %>%
     dplyr::mutate(vertex.names2 = dplyr::case_when(.data$id == "Kinase" ~ .data$vertex.names2,
                                                    .default = NA))
 
-  #check which kinase labels to show
+  # check which kinase labels to show
   if (show_kinases_labels == "None") {
     p$data$vertex.names2 <- NA
   } else if(show_kinases_labels == "Manual selection") {
@@ -137,7 +127,7 @@ plot_network_edited <- function(network_base,
     nudge_kinase_label_y <- 0
   }
 
-  #manipulate label here
+  # manipulate label here
   if (show_which_kinase_labels == "Uniprot gene name") {
     p$data <- p$data %>%
       dplyr::mutate(Uniprot_Gene_Name = dplyr::case_when(is.na(.data$vertex.names2) ~ NA,
@@ -190,29 +180,27 @@ plot_network_edited <- function(network_base,
   }
 
 
-  #check if kinase labels should be colored based on group.
+  # check if kinase labels should be colored based on group.
   if (color_kinase_labels_groups == TRUE) {
     p <- p + ggplot2::geom_text(ggplot2::aes(label = .data$vertex.names2, color = .data$Kinase_Group), size = label_size, nudge_x = nudge_kinase_label_x, nudge_y = nudge_kinase_label_y)#, family = input$chosenFont)
   } else {
     p <- p + ggplot2::geom_text(ggplot2::aes(label = .data$vertex.names2), size = label_size, color = default_label_color, nudge_x = nudge_kinase_label_x, nudge_y = nudge_kinase_label_y)#, family = input$chosenFont)
   }
 
-  #to color kinases and GFS individually, a new column is created.
-  #it contains labels only for kinases and NA for GFS
+  # to color kinases and GFS individually, a new column is created.
+  # it contains labels only for kinases and NA for GFS
   p$data <- p$data %>%
     dplyr::mutate(Kinase_Group2 = dplyr::case_when(.data$id == "Kinase" ~ .data$Kinase_Group,
                                                    .default = NA))
 
-  #add interactivity if chosen
-  #remove interactivity for now
+  # add interactivity if chosen
+  # remove interactivity for now
   #if(input$staticInteractive == "interactive"){
   #  p <- p +
   #    theme_blank()+
   #    geom_point_interactive(aes(tooltip = vertex.names, data_id = vertex.names), alpha = 0)
   #} else {
-  p <- p +
-    #ggplot2::theme_blank() +
-    ggplot2::theme(aspect.ratio = 1)
+  p <- p + ggplot2::theme(aspect.ratio = 1)
   #}
 
   if (!rlang::is_null(highlight_groups)) {
@@ -222,7 +210,7 @@ plot_network_edited <- function(network_base,
     }
   }
 
-  #change color palette
+  # change color palette
   if (color_palette != "Default ggplot2") {
     if (color_palette == "Custom") {
       p <- p + ggplot2::scale_fill_manual(values = custom_color_pal, aesthetics = c("colour", "fill"), na.translate = F)
@@ -233,7 +221,7 @@ plot_network_edited <- function(network_base,
     p <- p + ggplot2::scale_color_discrete(aesthetics = c("colour", "fill"), na.translate = F)
   }
 
-  #calculate position of group labels
+  # calculate position of group labels
   coord_origin <- p$data %>%
     dplyr::filter(.data$id == "Origin") %>%
     dplyr::select("x", "y", "vertex.names") %>%
@@ -245,7 +233,6 @@ plot_network_edited <- function(network_base,
     dplyr::distinct() %>%
     dplyr::mutate(x_dist = .data$x - .env$coord_origin$x,
                   y_dist = .data$y - .env$coord_origin$y) %>%
-     # removed * input$groupLabelRadius
     dplyr::mutate(x_pos = .env$coord_origin$x + .data$x_dist * 2,
                   y_pos = .env$coord_origin$y + .data$y_dist * 2) %>%
     dplyr::transmute(label = stringr::str_remove_all(.data$vertex.names, "^Group "),
@@ -254,7 +241,7 @@ plot_network_edited <- function(network_base,
 
 
   if (show_group_labels == TRUE) {
-    #add individual nudge
+    # add individual nudge
     group_labels <- group_labels %>%
       dplyr::left_join(custom_xy_nudge, by = "label") %>%
       dplyr::mutate(x = .data$x + .data$x_nudge,
@@ -336,7 +323,7 @@ assign_branch_groups_network <- function(kinome_df, network_base) {
 
   nwmp_origin <- network_base %>%
     dplyr::filter(.data$vertex.names == "Origin") %>%
-    #add connection origin -> group
+    # add connection origin -> group
     dplyr::select(-"Kinase_Group") %>%
     dplyr::left_join(dplyr::distinct(dplyr::select(nwmp_groups, "x", "y", "Kinase_Group")), by = dplyr::join_by("xend" == "x", "yend" == "y"))
 

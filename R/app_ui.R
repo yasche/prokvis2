@@ -18,7 +18,6 @@ app_ui <- function(request) {
     bslib::page_navbar(
       theme = bslib::bs_theme(version = 5, bootswatch = "pulse"),
       title = shiny::HTML("<img src = 'www/favicon.png' height = 70>"),
-      #title = "prokvis2",
       window_title = "prokvis2",
       bslib::nav_panel("Plots",
                        bslib::navset_card_underline(

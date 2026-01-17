@@ -29,10 +29,6 @@ run_app <- function(
   uiPattern = "/",
   ...
 ) {
-  #rlang::check_installed("abcdef")
-  #if (rlang::is_installed("ggtree") == FALSE) {
-  #  rlang::abort("Package `ggtree` is required but not installed.\nSee https://bioconductor.org/packages/ggtree/ for further information.")
-  #}
   with_golem_options(
     app = shinyApp(
       ui = app_ui,

@@ -115,7 +115,7 @@ plot_circular_edited <- function(circular_base,
   # (important for hiding kinases)
   p$data$label2 <- p$data$label
 
-  #check which kinase labels to show
+  # check which kinase labels to show
   if (show_kinases_labels == "None") {
     p$data$label <- NA
   } else if(show_kinases_labels == "Manual selection") {
@@ -129,7 +129,7 @@ plot_circular_edited <- function(circular_base,
   }
 
 
-  #manipulate label here
+  # manipulate label here
   if (show_which_kinase_labels == "Uniprot gene name") {
 
     p$data <- p$data %>%
@@ -137,8 +137,6 @@ plot_circular_edited <- function(circular_base,
                                                          .default = .data$Uniprot_Gene_Name)) %>%
       dplyr::mutate(chosen_label = .data$Uniprot_Gene_Name) %>%
       # safer way to mutate via id column
-      #dplyr::mutate(chosen_label = dplyr::case_when(grepl("Origin|Group|Family|Subfamily", .data$label) ~ .data$label,
-      #                                             .default = .data$chosen_label)) %>%
       dplyr::mutate(chosen_label = dplyr::case_when(.data$id == "Group" | .data$id == "Family" | .data$id == "Subfamily" | .data$id == "Origin" ~ .data$label,
                                                     .default = .data$chosen_label)) %>%
       dplyr::mutate(label = .data$chosen_label) %>%
@@ -150,9 +148,7 @@ plot_circular_edited <- function(circular_base,
       dplyr::mutate(Uniprot_Entry = dplyr::case_when(is.na(.data$label) ~ NA,
                                                      .default = .data$Uniprot_Entry)) %>%
       dplyr::mutate(chosen_label = .data$Uniprot_Entry) %>%
-      #preserve group, family, subfamily
-      #dplyr::mutate(chosen_label = dplyr::case_when(grepl("Origin|Group|Family|Subfamily", .data$label) ~ .data$label,
-      #                                              .default = .data$chosen_label)) %>%
+      # preserve group, family, subfamily
       dplyr::mutate(chosen_label = dplyr::case_when(.data$id == "Group" | .data$id == "Family" | .data$id == "Subfamily" | .data$id == "Origin" ~ .data$label,
                                                     .default = .data$chosen_label)) %>%
       dplyr::mutate(label = .data$chosen_label) %>%
@@ -164,9 +160,7 @@ plot_circular_edited <- function(circular_base,
       dplyr::mutate(Kinase_Name = dplyr::case_when(is.na(.data$label) ~ NA,
                                                    .default = .data$Kinase_Name)) %>%
       dplyr::mutate(chosen_label = .data$Kinase_Name) %>%
-      #preserve group, family, subfamily
-      #dplyr::mutate(chosen_label = dplyr::case_when(grepl("Origin|Group|Family|Subfamily", .data$label) ~ .data$label,
-      #                                              .default = .data$chosen_label)) %>%
+      # preserve group, family, subfamily
       dplyr::mutate(chosen_label = dplyr::case_when(.data$id == "Group" | .data$id == "Family" | .data$id == "Subfamily" | .data$id == "Origin" ~ .data$label,
                                                     .default = .data$chosen_label)) %>%
       dplyr::mutate(label = .data$chosen_label) %>%
@@ -178,9 +172,7 @@ plot_circular_edited <- function(circular_base,
       dplyr::mutate(Uniprot_Accession = dplyr::case_when(is.na(.data$label) ~ NA,
                                                          .default = .data$Uniprot_Accession)) %>%
       dplyr::mutate(chosen_label = .data$Uniprot_Accession) %>%
-      #preserve group, family, subfamily
-      #dplyr::mutate(chosen_label = dplyr::case_when(grepl("Origin|Group|Family|Subfamily", .data$label) ~ .data$label,
-      #                                              .default = .data$chosen_label)) %>%
+      # preserve group, family, subfamily
       dplyr::mutate(chosen_label = dplyr::case_when(.data$id == "Group" | .data$id == "Family" | .data$id == "Subfamily" | .data$id == "Origin" ~ .data$label,
                                                     .default = .data$chosen_label)) %>%
       dplyr::mutate(label = .data$chosen_label) %>%
@@ -192,9 +184,7 @@ plot_circular_edited <- function(circular_base,
       dplyr::mutate(Clabel = dplyr::case_when(is.na(.data$label) ~ NA,
                                               .default = .data$Clabel)) %>%
       dplyr::mutate(chosen_label = .data$Clabel) %>%
-      #preserve group, family, subfamily
-      #dplyr::mutate(chosen_label = dplyr::case_when(grepl("Origin|Group|Family|Subfamily", .data$label) ~ .data$label,
-      #                                              .default = .data$chosen_label)) %>%
+      # preserve group, family, subfamily
       dplyr::mutate(chosen_label = dplyr::case_when(.data$id == "Group" | .data$id == "Family" | .data$id == "Subfamily" | .data$id == "Origin" ~ .data$label,
                                                     .default = .data$chosen_label)) %>%
       dplyr::mutate(label = .data$chosen_label) %>%
@@ -202,14 +192,14 @@ plot_circular_edited <- function(circular_base,
 
   }
 
-  #check if kinase labels should be colored based on group.
+  # check if kinase labels should be colored based on group.
   if (color_kinase_labels_groups == TRUE) {
     p <- p + ggtree::geom_tiplab(ggtree::aes(color = .data$Kinase_Group), size = label_size)#, family = input$chosenFont) # Font needs to be redone
   } else {
     p <- p + ggtree::geom_tiplab(size = label_size, color = default_label_color)#, family = input$chosenFont)
   }
 
-  #check if branches should be highlighted based on group.
+  # check if branches should be highlighted based on group.
   if (!rlang::is_null(highlight_groups)) {
     if (highlight_groups == TRUE) {
       # This produces message
@@ -237,13 +227,13 @@ plot_circular_edited <- function(circular_base,
   #  }
 
   #} else {
-    #check if branches should be colored based on group.
+  # check if branches should be colored based on group.
   if (color_branches_groups == TRUE) {
     p <- p + ggtree::aes(colour = .data$glabel)
   }
   #}
 
-  #change color palette
+  # change color palette
   if (color_palette != "Default ggplot2") {
     if (color_palette == "Custom") {
       p <- p + ggtree::scale_fill_manual(values = custom_color_pal, aesthetics = c("colour", "fill"), na.translate = F)
@@ -258,7 +248,6 @@ plot_circular_edited <- function(circular_base,
     group_labels <- p$data %>%
       dplyr::select("label2", "x", "y", "angle", "id") %>%
       dplyr::mutate(x = .data$x * 4.5 * .env$group_label_radius) %>%
-      #dplyr::filter(grepl("^Group [A-Za-z0-9]{1,}$", .data$label2)) %>%
       dplyr::filter(.data$id == "Group") %>%
       dplyr::mutate(label = stringr::str_remove_all(.data$label2, "^Group ")) %>%
       dplyr::select(-"id")
@@ -285,15 +274,12 @@ plot_circular_edited <- function(circular_base,
   }
 
   p <- p + ggplot2::labs(dictionary = c(glabel = "Kinase Group"))
-  #interactive mode can't handle other fonts in legend for some reason...
+  # interactive mode can't handle other fonts in legend for some reason...
   #if (input$staticInteractive == "static") {
-  #add font later
+  # add font later
     p <- p + ggtree::theme(legend.text = ggplot2::element_text(size = legend_label_size),# family = input$chosenFont),
                    legend.title = ggplot2::element_text(size = legend_title_size))#, family = input$chosenFont))
   #}
-
-  #theme(legend.text = element_text(size = input$legendLabelSize, family = input$chosenFont),
-  #      legend.title = element_text(size = input$legendTitleSize, family = input$chosenFont))
 
   if (hide_legend == TRUE) {
     p <- p + ggtree::theme(legend.position = "none")
@@ -333,7 +319,7 @@ assign_branch_groups_circular <- function(kinome_df, circular_base) {
                      group = .data$Kinase_Group) %>%
     dplyr::distinct()
 
-  #add groups of kinases (last branch connecting to kinase)
+  # add groups of kinases (last branch connecting to kinase)
 
   tmp_df4 <- circular_base@extraInfo %>%
     dplyr::mutate(glabel = .data$Kinase_Group) %>%
