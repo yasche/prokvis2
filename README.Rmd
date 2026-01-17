@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: end -->
 
-The goal of prokvis2 is to provide an easy-to-use Shiny application to create intuitive visualizations of kinome data similar to KinMap [@eid2017] and CORAL [@metz2018]. What is unique about prokvis2 is its ability to visualize the kinomes of several model organisms, including mouse, fruit fly and Baker's yeast, besides that of humans.
+The goal of prokvis2 is to provide an easy-to-use Shiny application to create intuitive visualizations of kinome data similar to KinMap [@eid2017] and CORAL [@metz2018]. What is unique about prokvis2 is its ability to visualize the kinomes of several model organisms, including mouse, fruit fly and baker's yeast, besides that of humans.
 
 ## Installation
 
