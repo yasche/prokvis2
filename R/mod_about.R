@@ -9,11 +9,11 @@
 #' @importFrom shiny NS tagList
 mod_about_ui <- function(id) {
   ns <- NS(id)
-  tagList(
-    system.file("app", "www", "about.html", package = "prokvis2") %>%
-      readr::read_lines() %>%
-      paste(collapse = "\n") %>%
-      shiny::HTML()
+  bslib::layout_column_wrap(
+    bslib::card(system.file("app", "www", "about.html", package = "prokvis2") %>%
+           readr::read_lines() %>%
+           paste(collapse = "\n") %>%
+           shiny::HTML())
   )
 }
 
