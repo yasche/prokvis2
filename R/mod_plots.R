@@ -116,6 +116,20 @@ mod_plots_ui <- function(id, plot_tab, kinome_data) {
                 )
               }
             ),
+            bslib::accordion_panel(
+              "Save Plot", icon = bsicons::bs_icon("floppy"),
+              shiny::textInput(ns("download_plot_title"), label = "Add a plot title (optional)"),
+              shiny::numericInput(ns("download_plot_width"), label = "Plot width", value = 1000, min = 1, max = 1000),
+              shiny::numericInput(ns("download_plot_height"), label = "Plot height", value = 1000, min = 1, max = 1000),
+              shiny::textInput(ns("download_plot_filename"), label = "File name", value = "plot"),
+              shiny::selectInput(ns("download_plot_extension"), label = "File type", choices = c("PNG" = "png", "SVG" = "svg", "ggplot object (RDS)" = "rds"), multiple = FALSE, selected = "PNG"),
+              if (plot_tab == "circular") {
+                shiny::downloadButton(ns("plot_download_circular"), label = "Download")
+              },
+              if (plot_tab == "network") {
+                shiny::downloadButton(ns("plot_download_network"), label = "Download")
+              }
+            ),
             open = FALSE
           )
         }
@@ -517,6 +531,62 @@ mod_plots_server <- function(id, kinome_data){
         )
       )
     })
+
+    output$plot_download_circular <- shiny::downloadHandler(
+      filename = function(filename = input$download_plot_filename,
+                          extension = input$download_plot_extension) {
+        paste0(filename, ".", extension)
+      },
+      content = function(file) {
+        p = reactive_plot_circular_mod()
+
+        p_width <- input$download_plot_width
+        p_height <- input$download_plot_height
+
+        p_width_inch <- p_width / 72
+        p_height_inch <- p_height / 72
+
+        if (input$download_plot_extension == "svg") {
+          svg(file, width = p_width_inch, height = p_height_inch)
+          plot(p + ggplot2::labs(title = input$download_plot_title))
+          dev.off()
+        } else if (input$download_plot_extension == "png") {
+          png(file, width = p_width_inch, height = p_height_inch, units = "in", res = 600)
+          plot(p + ggplot2::labs(title = input$download_plot_title))
+          dev.off()
+        } else if (input$download_plot_extension == "rds") {
+          readr::write_rds(p, file = file)
+        }
+      }
+    )
+
+    output$plot_download_network <- shiny::downloadHandler(
+      filename = function(filename = input$download_plot_filename,
+                          extension = input$download_plot_extension) {
+        paste0(filename, ".", extension)
+      },
+      content = function(file) {
+        p = reactive_plot_network_mod()
+
+        p_width <- input$download_plot_width
+        p_height <- input$download_plot_height
+
+        p_width_inch <- p_width / 72
+        p_height_inch <- p_height / 72
+
+        if (input$download_plot_extension == "svg") {
+          svg(file, width = p_width_inch, height = p_height_inch)
+          plot(p + ggplot2::labs(title = input$download_plot_title))
+          dev.off()
+        } else if (input$download_plot_extension == "png") {
+          png(file, width = p_width_inch, height = p_height_inch, units = "in", res = 600)
+          plot(p + ggplot2::labs(title = input$download_plot_title))
+          dev.off()
+        } else if (input$download_plot_extension == "rds") {
+          readr::write_rds(p, file = file)
+        }
+      }
+    )
   })
 }
 
