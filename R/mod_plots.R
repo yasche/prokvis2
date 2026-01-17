@@ -547,13 +547,13 @@ mod_plots_server <- function(id, kinome_data){
         p_height_inch <- p_height / 72
 
         if (input$download_plot_extension == "svg") {
-          svg(file, width = p_width_inch, height = p_height_inch)
+          grDevices::svg(file, width = p_width_inch, height = p_height_inch)
           plot(p + ggplot2::labs(title = input$download_plot_title))
-          dev.off()
+          grDevices::dev.off()
         } else if (input$download_plot_extension == "png") {
-          png(file, width = p_width_inch, height = p_height_inch, units = "in", res = 600)
+          grDevices::png(file, width = p_width_inch, height = p_height_inch, units = "in", res = 600)
           plot(p + ggplot2::labs(title = input$download_plot_title))
-          dev.off()
+          grDevices::dev.off()
         } else if (input$download_plot_extension == "rds") {
           readr::write_rds(p, file = file)
         }
@@ -575,13 +575,13 @@ mod_plots_server <- function(id, kinome_data){
         p_height_inch <- p_height / 72
 
         if (input$download_plot_extension == "svg") {
-          svg(file, width = p_width_inch, height = p_height_inch)
+          grDevices::svg(file, width = p_width_inch, height = p_height_inch)
           plot(p + ggplot2::labs(title = input$download_plot_title))
-          dev.off()
+          grDevices::dev.off()
         } else if (input$download_plot_extension == "png") {
-          png(file, width = p_width_inch, height = p_height_inch, units = "in", res = 600)
+          grDevices::png(file, width = p_width_inch, height = p_height_inch, units = "in", res = 600)
           plot(p + ggplot2::labs(title = input$download_plot_title))
-          dev.off()
+          grDevices::dev.off()
         } else if (input$download_plot_extension == "rds") {
           readr::write_rds(p, file = file)
         }
