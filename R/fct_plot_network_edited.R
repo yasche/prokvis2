@@ -276,6 +276,9 @@ plot_network_edited <- function(network_base,
       p <- p + ggplot2::labs(fill = "Kinase Group")
     }
   }
+
+  p <- p + ggplot2::labs(dictionary = c(Kinase_Group = "Kinase Group"))
+
   #interactive mode can't handle other fonts in legend for some reason...
   #if (input$staticInteractive == "static") {
   p <- p + ggplot2::theme(legend.text = ggplot2::element_text(size = legend_label_size),# family = input$chosenFont),

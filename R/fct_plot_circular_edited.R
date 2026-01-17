@@ -284,6 +284,7 @@ plot_circular_edited <- function(circular_base,
     }
   }
 
+  p <- p + ggplot2::labs(dictionary = c(glabel = "Kinase Group"))
   #interactive mode can't handle other fonts in legend for some reason...
   #if (input$staticInteractive == "static") {
   #add font later
