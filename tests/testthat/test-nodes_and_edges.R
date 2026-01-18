@@ -78,3 +78,20 @@ test_that("combine_nodes_and_edges gives an empty data frames if args are NULL",
 
   expect_true(all(df == TRUE))
 })
+
+
+test_that("nodes_and_edges() returns rhot object for species_selection = 'dm' and all nodes and edges", {
+  kinome_df <- extract_kinome_df(kinome_data, "dm")
+
+  exp_class <- c("rhandsontable", "htmlwidget")
+
+  mn <- nodes_and_edges(kinome_df, "Manning_Name")
+  ks <- nodes_and_edges(kinome_df, "Kinase_Subfamily")
+  kf <- nodes_and_edges(kinome_df, "Kinase_Family")
+  kg <- nodes_and_edges(kinome_df, "Kinase_Group")
+
+  expect_equal(class(mn), exp_class)
+  expect_equal(class(ks), exp_class)
+  expect_equal(class(kf), exp_class)
+  expect_equal(class(kg), exp_class)
+})
