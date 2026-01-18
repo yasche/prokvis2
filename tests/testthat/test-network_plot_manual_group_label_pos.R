@@ -21,3 +21,34 @@ test_that("Vectors are interlaced", {
   expect_equal(actual_xy , expected_xy)
 })
 
+test_that("Nudge extraction works", {
+  kgroups <- c("AGC", "TKL")
+  nudge_nums <- kinase_groups_to_custom_xy(kgroups)
+  sim_input <- 1:4
+
+  names(sim_input) <- nudge_nums
+
+  res <- custom_xy_nums_to_nudge(nudge_nums, sim_input, kgroups)
+
+  expected_res <- tibble::tibble(
+    x_nudge = c(1L, 3L),
+    y_nudge = c(2L, 4L),
+    label = kgroups
+  )
+
+  expect_equal(res, expected_res)
+})
+
+
+test_that("manual_group_label_pos_input() creates a shiny input", {
+  id <- "plots_ui_c"
+  ns <- shiny::NS(id)
+  kinase_groups <- c("AGC", "TKL")
+  custom_color_nums <- kinase_groups_to_custom_xy(kinase_groups)
+
+
+  res <- manual_group_label_pos_input(custom_color_nums, kinase_groups, ns, id)
+
+  expect_equal(class(res), "list")
+  expect_equal(length(res), length(kinase_groups) * 2)
+})
