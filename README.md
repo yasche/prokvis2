@@ -15,9 +15,11 @@ al. 2017) and CORAL (Metz et al. 2018). What is unique about prokvis2 is
 its ability to visualize the kinomes of several model organisms,
 including mouse, fruit fly and baker’s yeast, besides that of humans.
 
-Kinase data was derived from several publications, including (Caenepeel
-et al. 2004) and (Manning et al. 2002), and is redistributed with kind
-permission from Gerard Manning (<https://manninglab.org>).
+Kinase data was derived from KinBase
+(<http://kinase.com/web/current/kinbase/>) which contains data from
+several publications, including (Caenepeel et al. 2004) and (Manning et
+al. 2002), and is redistributed with kind permission from Gerard Manning
+(<https://manninglab.org>).
 
 ## Installation
 
