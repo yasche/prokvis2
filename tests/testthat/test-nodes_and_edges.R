@@ -95,3 +95,48 @@ test_that("nodes_and_edges() returns rhot object for species_selection = 'dm' an
   expect_equal(class(kf), exp_class)
   expect_equal(class(kg), exp_class)
 })
+
+
+test_that("nodes_and_edges() returns rhot with correct nrow for species_selection = 'dm' and all nodes and edges", {
+  kinome_df <- extract_kinome_df(kinome_data, "dm")
+
+  exp_nrow_mn <- nrow(kinome_df)
+  exp_nrow_ks <- length(unique(kinome_df$Kinase_Subfamily))
+  exp_nrow_kf <- length(unique(kinome_df$Kinase_Family))
+  exp_nrow_kg <- length(unique(kinome_df$Kinase_Group))
+
+  mn <- nodes_and_edges(kinome_df, "Manning_Name")$x$rDataDim[[1]]
+  ks <- nodes_and_edges(kinome_df, "Kinase_Subfamily")$x$rDataDim[[1]]
+  kf <- nodes_and_edges(kinome_df, "Kinase_Family")$x$rDataDim[[1]]
+  kg <- nodes_and_edges(kinome_df, "Kinase_Group")$x$rDataDim[[1]]
+
+  expect_equal(mn, exp_nrow_mn)
+  expect_equal(ks, exp_nrow_ks)
+  expect_equal(kf, exp_nrow_kf)
+  expect_equal(kg, exp_nrow_kg)
+})
+
+test_that("nodes_and_edges() returns rhot with correct choices for species_selection = 'dm' and all nodes and edges", {
+  kinome_df <- extract_kinome_df(kinome_data, "dm")
+
+  exp_source_mn <- kinome_df$Manning_Name
+  exp_source_ks <- unique(kinome_df$Kinase_Subfamily)
+  exp_source_kf <- unique(kinome_df$Kinase_Family)
+  exp_source_kg <- unique(kinome_df$Kinase_Group)
+
+  mn <- nodes_and_edges(kinome_df, "Manning_Name")$x$columns[[1]]$source
+  ks <- nodes_and_edges(kinome_df, "Kinase_Subfamily")$x$columns[[1]]$source
+  kf <- nodes_and_edges(kinome_df, "Kinase_Family")$x$columns[[1]]$source
+  kg <- nodes_and_edges(kinome_df, "Kinase_Group")$x$columns[[1]]$source
+
+  # should have option where none is selected
+  expect_equal(setdiff(mn, exp_source_mn), "")
+  expect_equal(setdiff(ks, exp_source_ks), "")
+  expect_equal(setdiff(kf, exp_source_kf), "")
+  expect_equal(setdiff(kg, exp_source_kg), "")
+
+  expect_equal(setdiff(exp_source_mn, mn), character())
+  expect_equal(setdiff(exp_source_ks, ks), character())
+  expect_equal(setdiff(exp_source_kf, kf), character())
+  expect_equal(setdiff(exp_source_kg, kg), character())
+})
