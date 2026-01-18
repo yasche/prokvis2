@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# prokvis2 <img src="man/figures/logo.png" align="right" height="139" alt="" />
+# prokvis2 <img src="man/figures/logo.png" align="right" height="139"/>
 
 <!-- badges: start -->
 
@@ -23,6 +23,8 @@ knitr::opts_chunk$set(
 <!-- badges: end -->
 
 The goal of prokvis2 is to provide an easy-to-use Shiny application to create intuitive visualizations of kinome data similar to KinMap [@eid2017] and CORAL [@metz2018]. What is unique about prokvis2 is its ability to visualize the kinomes of several model organisms, including mouse, fruit fly and baker's yeast, besides that of humans.
+
+Kinase data was derived from several publications, including [@caenepeel2004] and [@manning2002], and is redistributed with kind permission from Gerard Manning (<https://manninglab.org>).
 
 ## Installation
 

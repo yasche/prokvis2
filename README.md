@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# prokvis2 <img src="man/figures/logo.png" align="right" height="139" alt="" />
+# prokvis2 <img src="man/figures/logo.png" align="right" height="139"/>
 
 <!-- badges: start -->
 
@@ -14,6 +14,10 @@ create intuitive visualizations of kinome data similar to KinMap (Eid et
 al. 2017) and CORAL (Metz et al. 2018). What is unique about prokvis2 is
 its ability to visualize the kinomes of several model organisms,
 including mouse, fruit fly and baker’s yeast, besides that of humans.
+
+Kinase data was derived from several publications, including (Caenepeel
+et al. 2004) and (Manning et al. 2002), and is redistributed with kind
+permission from Gerard Manning (<https://manninglab.org>).
 
 ## Installation
 
@@ -45,12 +49,30 @@ run_app(custom_kinome_data = "path/to/kinome_data.rds")
 <div id="refs" class="references csl-bib-body hanging-indent"
 entry-spacing="0">
 
+<div id="ref-caenepeel2004" class="csl-entry">
+
+Caenepeel, Sean, Glen Charydczak, Sucha Sudarsanam, Tony Hunter, and
+Gerard Manning. 2004. “The Mouse Kinome: Discovery and Comparative
+Genomics of All Mouse Protein Kinases.” *Proceedings of the National
+Academy of Sciences* 101 (32): 11707–12.
+<https://doi.org/10.1073/pnas.0306880101>.
+
+</div>
+
 <div id="ref-eid2017" class="csl-entry">
 
 Eid, Sameh, Samo Turk, Andrea Volkamer, Friedrich Rippmann, and Simone
 Fulle. 2017. “KinMap: A Web-Based Tool for Interactive Navigation
 Through Human Kinome Data.” *BMC Bioinformatics* 18 (1): 16.
 <https://doi.org/10.1186/s12859-016-1433-7>.
+
+</div>
+
+<div id="ref-manning2002" class="csl-entry">
+
+Manning, G., D. B. Whyte, R. Martinez, T. Hunter, and S. Sudarsanam.
+2002. “The Protein Kinase Complement of the Human Genome.” *Science* 298
+(5600): 1912–34. <https://doi.org/10.1126/science.1075762>.
 
 </div>
 
